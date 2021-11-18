@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace OnlyFarms.Models {
     public class Worker {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public double HourlyPay { get; set; }

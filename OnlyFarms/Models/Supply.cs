@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace OnlyFarms.Models {
     public class Supply {
+        public int Id { get; set; }
         public string Name { get; set; }
         public double PricePerKilo { get; set; }
     }
