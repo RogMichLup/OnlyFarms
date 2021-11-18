@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OnlyFarms.Models
 {
-    class Field
+    public class Field
     {
         public int Id { get; set; }
         public string Tag { get; set; }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OnlyFarms.Models
 {
-    class Procedure
+    public class Procedure
     {
         public int Id { get; set; }
         public string Label { get; set; }
