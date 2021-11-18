@@ -7,7 +7,7 @@ namespace OnlyFarms.Models
 {
     public class Contract
     {
-        public Guid ContractID { get; set; }
+        public int ID { get; set; }
         public int Quantity { get; set; }
         public DateTime DeliveryDate { get; set; }
         public Crop Crop { get; set; }    

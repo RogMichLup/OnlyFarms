@@ -7,7 +7,7 @@ namespace OnlyFarms.Models
 {
     public class CropSale
     {
-        public Guid SaleID { get; set; }
+        public int ID { get; set; }
         public int Quantity { get; set; }
         public DateTime SaleDate { get; set; }
         public Crop Crop { get; set; }
