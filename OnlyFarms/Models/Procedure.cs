@@ -7,7 +7,7 @@ namespace OnlyFarms.Models
 {
     public class Procedure
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public string Label { get; set; }
         public DateTime Date { get; set; }
         public double DurationInHours { get; set; }

@@ -7,7 +7,7 @@ namespace OnlyFarms.Models
 {
     public class Field
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public string Tag { get; set; }
         public string Location { get; set; }
         public string Street { get; set; }
