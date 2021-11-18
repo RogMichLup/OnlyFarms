@@ -28,6 +28,8 @@ namespace OnlyFarms
             services.AddDbContext<FarmContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaltConnection")));
 
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             services.AddControllersWithViews();
         }
 
