@@ -26,7 +26,7 @@ namespace OnlyFarms
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<FarmContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaltConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
