@@ -76,18 +76,6 @@ namespace OnlyFarms.Data
 
             context.SaveChanges();
 
-
-            //var machines = new Machine[]
-            //{
-            //    new Equipment{ AmortizationCost = 500, Name="Case", Status="Fine"}
-            //};
-
-            //foreach (Equipment e in equipments)
-            //{
-            //    context.Equipments.Add(e);
-            //}
-
-            //context.SaveChanges();
         }
     }
 }
