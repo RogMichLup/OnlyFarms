@@ -23,6 +23,7 @@ namespace OnlyFarms.Data
         public DbSet<Supply> Supplies { get; set; }
         public DbSet<Weather> Weathers { get; set; }
         public DbSet<Worker> Workers { get; set; }
+        public DbSet<ContractCrop> ContractCrops { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBulider)
         {
@@ -37,6 +38,7 @@ namespace OnlyFarms.Data
             modelBulider.Entity<Supply>().ToTable("Supply");
             modelBulider.Entity<Weather>().ToTable("Weather");
             modelBulider.Entity<Worker>().ToTable("Worker");
+            modelBulider.Entity<ContractCrop>().ToTable("ContractCrop");
         }
     }
 }

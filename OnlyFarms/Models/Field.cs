@@ -1,23 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OnlyFarms.Models
 {
     public class Field
     {
+        [Key]
         public int ID { get; set; }
 
-        public string Tag { get; set; }
+        [MaxLength(50)]
+        public string? Tag { get; set; }
 
         [Required]
-        public string Location { get; set; }
+        [MaxLength(30)]
+        public string City { get; set; }
 
-        public string Street { get; set; }
+        [MaxLength(30)]
+        public string? Street { get; set; }
 
         [Required]
+        [Range(0, 1000)]
         public int FieldSurface { get; set; }
     }
 }

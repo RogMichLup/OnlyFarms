@@ -1,21 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlyFarms.Models
 {
     public class Weather
     {
+        [Key]
         public int ID { get; set; }
-        public int Temperature { get; set; }
+
+        [Required]
+        [Range (-50, 50)]
+        public double Temperature { get; set; }
+
+        [Required]
+        [Range (0, 100)]
         public int Moisture { get; set; }
+
+        [Required]
+        [Range (900, 1100)]
         public int AirPressure { get; set; }
+
+        [Required]
+        [Range (0, 1825)]
         public int RainfallAmount { get; set; }
+
+        [Required]
         public string WindDirection { get; set; }
+
+        [Required]
+        [Range (0, 200)]
         public int WindSpeed { get; set; }
+
+        [Required]
         public DateTime Date { get; set; }
         public int FieldID { get; set; }
+
+        [ForeignKey("Field")]
         public Field Field { get; set; }
     }
 }

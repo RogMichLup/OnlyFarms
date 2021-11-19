@@ -1,21 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OnlyFarms.Models
 {
     public class Crop
     {
+        [Key]
         public int ID { get; set; }
 
         [Required]
+        [MaxLength(30)]
         public string CropName { get; set; }
 
-        public int Price { get; set; }
+        [Required]
+        [Range(0, 10000)]
+        public int SellPricePerTonne { get; set; }
 
         [Required]
+        [Range(0, 500)]
         public int ExpectedYield { get; set; }
+
     }
 }

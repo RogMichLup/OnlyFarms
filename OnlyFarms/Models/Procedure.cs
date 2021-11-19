@@ -1,26 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlyFarms.Models
 {
     public class Procedure
     {
+        [Key]
         public int ID { get; set; }
+
+        [Required]
+        [MaxLength(50)]
         public string Label { get; set; }
-        public DateTime Date { get; set; }
-        public double DurationInHours { get; set; }
-        public double SupplyAmountInKilo { get; set; }
+
+        [Required]
+        public DateTime StartDate { get; set; }
+
+        [Range(0, 100)]
+        public double? DurationInHours { get; set; }
+
+        [Required]
+        public string Status { get; set; }
         public int FieldID { get; set; }
         public int EquipmentID { get; set; }
         public int MachineID { get; set; }
         public int WorkerID { get; set; }
+        
+        [ForeignKey("Field")]
         public Field Field { get; set; }
+        
+        [ForeignKey("Equipment")]
         public Equipment Equipment { get; set; }
+
+        [ForeignKey("Machine")]
         public Machine Machine { get; set; }
+
+        [ForeignKey("Worker")]
         public Worker Worker { get; set; }
-        public string State { get; set; }
         public ICollection<Supply> Supplies { get; set; }
     }
 }

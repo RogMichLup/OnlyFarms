@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlyFarms.Models
 {
     public class CropSale
     {
+        [Key]
         public int ID { get; set; }
 
         [Required]
+        [Range(0, 1000)]
         public int Quantity { get; set; }
 
-        public DateTime SaleDate { get; set; }
+        public DateTime? SaleDate { get; set; }
 
         public int CropID { get; set; }
 
-        [Required]
+        [ForeignKey("Crop")]
         public Crop Crop { get; set; }
     }
 }

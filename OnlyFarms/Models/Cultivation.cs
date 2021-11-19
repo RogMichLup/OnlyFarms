@@ -1,27 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OnlyFarms.Models {
+namespace OnlyFarms.Models
+{
     public class Cultivation {
+        [Key]
         public int ID { get; set; }
 
         [Required]
         [Range (1, 1000)]
         public int AreaInHectar { get; set; }
 
+        [Required]
+        [MaxLength(50)]
         public string CropStatus { get; set; }
 
         public int CropID { get; set; }
 
         public int FieldID { get; set; }
-
-        [Required]
+        
+        [ForeignKey("Crop")]
         public Crop Crop { get; set; }
 
-        [Required]
+        [ForeignKey("Field")]
         public Field Field { get; set; }
     }
 }

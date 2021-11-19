@@ -10,8 +10,8 @@ using OnlyFarms.Data;
 namespace OnlyFarms.Migrations
 {
     [DbContext(typeof(FarmContext))]
-    [Migration("20211119115946_NewTable")]
-    partial class NewTable
+    [Migration("20211119181126_CreateTable")]
+    partial class CreateTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,14 +34,34 @@ namespace OnlyFarms.Migrations
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
+                    b.HasKey("ID");
+
+                    b.ToTable("Contract");
+                });
+
+            modelBuilder.Entity("OnlyFarms.Models.ContractCrop", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ContractID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CropID")
+                        .HasColumnType("int");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
+                    b.HasIndex("ContractID");
+
                     b.HasIndex("CropID");
 
-                    b.ToTable("Contract");
+                    b.ToTable("ContractCrop");
                 });
 
             modelBuilder.Entity("OnlyFarms.Models.Crop", b =>
@@ -52,6 +72,7 @@ namespace OnlyFarms.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CropName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ExpectedYield")
@@ -78,7 +99,7 @@ namespace OnlyFarms.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("SaleDate")
+                    b.Property<DateTime?>("SaleDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ID");
@@ -102,7 +123,9 @@ namespace OnlyFarms.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CropStatus")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("FieldID")
                         .HasColumnType("int");
@@ -123,14 +146,17 @@ namespace OnlyFarms.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("AmortizationCost")
-                        .HasColumnType("float");
-
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("UtilizationCost")
+                        .HasColumnType("float");
 
                     b.HasKey("ID");
 
@@ -144,17 +170,19 @@ namespace OnlyFarms.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("FieldSurface")
                         .HasColumnType("int");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tag")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ID");
 
@@ -168,17 +196,20 @@ namespace OnlyFarms.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("AmortizationCost")
-                        .HasColumnType("float");
-
                     b.Property<double>("FuelUsageRate")
                         .HasColumnType("float");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("UtilizationCost")
+                        .HasColumnType("float");
 
                     b.HasKey("ID");
 
@@ -192,10 +223,7 @@ namespace OnlyFarms.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("DurationInHours")
+                    b.Property<double?>("DurationInHours")
                         .HasColumnType("float");
 
                     b.Property<int>("EquipmentID")
@@ -205,19 +233,19 @@ namespace OnlyFarms.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Label")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("MachineID")
                         .HasColumnType("int");
 
-                    b.Property<string>("State")
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("SupplyAmountInKilo")
-                        .HasColumnType("float");
-
-                    b.Property<int>("SupplyID")
-                        .HasColumnType("int");
 
                     b.Property<int>("WorkerID")
                         .HasColumnType("int");
@@ -229,8 +257,6 @@ namespace OnlyFarms.Migrations
                     b.HasIndex("FieldID");
 
                     b.HasIndex("MachineID");
-
-                    b.HasIndex("SupplyID");
 
                     b.HasIndex("WorkerID");
 
@@ -245,10 +271,15 @@ namespace OnlyFarms.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<double>("PricePerKilo")
                         .HasColumnType("float");
+
+                    b.Property<int>("SupplyAmountPerHectare")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -277,10 +308,11 @@ namespace OnlyFarms.Migrations
                     b.Property<int>("RainfallAmount")
                         .HasColumnType("int");
 
-                    b.Property<int>("Temperature")
-                        .HasColumnType("int");
+                    b.Property<double>("Temperature")
+                        .HasColumnType("float");
 
                     b.Property<string>("WindDirection")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("WindSpeed")
@@ -301,29 +333,56 @@ namespace OnlyFarms.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<DateTime>("HiringDate")
+                    b.Property<DateTime?>("HiringDate")
                         .HasColumnType("datetime2");
 
                     b.Property<double>("HourlyPay")
                         .HasColumnType("float");
 
                     b.Property<string>("Surname")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("ID");
 
                     b.ToTable("Worker");
                 });
 
-            modelBuilder.Entity("OnlyFarms.Models.Contract", b =>
+            modelBuilder.Entity("ProcedureSupply", b =>
                 {
+                    b.Property<int>("ProceduresID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SuppliesID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProceduresID", "SuppliesID");
+
+                    b.HasIndex("SuppliesID");
+
+                    b.ToTable("ProcedureSupply");
+                });
+
+            modelBuilder.Entity("OnlyFarms.Models.ContractCrop", b =>
+                {
+                    b.HasOne("OnlyFarms.Models.Contract", "Contract")
+                        .WithMany("ContractCrop")
+                        .HasForeignKey("ContractID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("OnlyFarms.Models.Crop", "Crop")
-                        .WithMany()
+                        .WithMany("ContractCrop")
                         .HasForeignKey("CropID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Contract");
 
                     b.Navigation("Crop");
                 });
@@ -378,12 +437,6 @@ namespace OnlyFarms.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlyFarms.Models.Supply", "Supply")
-                        .WithMany()
-                        .HasForeignKey("SupplyID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("OnlyFarms.Models.Worker", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerID")
@@ -395,8 +448,6 @@ namespace OnlyFarms.Migrations
                     b.Navigation("Field");
 
                     b.Navigation("Machine");
-
-                    b.Navigation("Supply");
 
                     b.Navigation("Worker");
                 });
@@ -410,6 +461,31 @@ namespace OnlyFarms.Migrations
                         .IsRequired();
 
                     b.Navigation("Field");
+                });
+
+            modelBuilder.Entity("ProcedureSupply", b =>
+                {
+                    b.HasOne("OnlyFarms.Models.Procedure", null)
+                        .WithMany()
+                        .HasForeignKey("ProceduresID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlyFarms.Models.Supply", null)
+                        .WithMany()
+                        .HasForeignKey("SuppliesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OnlyFarms.Models.Contract", b =>
+                {
+                    b.Navigation("ContractCrop");
+                });
+
+            modelBuilder.Entity("OnlyFarms.Models.Crop", b =>
+                {
+                    b.Navigation("ContractCrop");
                 });
 #pragma warning restore 612, 618
         }
