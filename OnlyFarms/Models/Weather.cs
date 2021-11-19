@@ -26,6 +26,7 @@ namespace OnlyFarms.Models
         public int RainfallAmount { get; set; }
 
         [Required]
+        [MaxLength(5)]
         public string WindDirection { get; set; }
 
         [Required]

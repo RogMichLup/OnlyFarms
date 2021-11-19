@@ -18,6 +18,7 @@ namespace OnlyFarms.Models
         public DateTime StartDate { get; set; }
 
         [Range(0, 100)]
+        [MaxLength(50)]
         public double? DurationInHours { get; set; }
 
         [Required]
