@@ -7,7 +7,7 @@ namespace OnlyFarms.Models
 {
     public class Weather
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public int Temperature { get; set; }
         public int Moisture { get; set; }
         public int AirPressure { get; set; }
@@ -15,6 +15,7 @@ namespace OnlyFarms.Models
         public string WindDirection { get; set; }
         public int WindSpeed { get; set; }
         public DateTime Date { get; set; }
+        public int FieldID { get; set; }
         public Field Field { get; set; }
     }
 }
