@@ -30,7 +30,7 @@ namespace OnlyFarms.Data
 
             var contracts = new Contract[]
             {
-                new Contract{ DeliveryDate = DateTime.Parse("2021-11-01")}
+                new Contract{ DeliveryDate = DateTime.Parse("2021-11-01"), ClientName ="Mlekovita"}
             };
             foreach (Contract c in contracts)
             {

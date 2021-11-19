@@ -10,11 +10,9 @@ namespace OnlyFarms.Models
 
         public int ContractID { get; set; }
 
-        [ForeignKey("Contract")]
         public Contract Contract { get; set; }
         public int CropID { get; set; }
 
-        [ForeignKey("Crop")]
         public Crop Crop { get; set; }
 
         [Required]

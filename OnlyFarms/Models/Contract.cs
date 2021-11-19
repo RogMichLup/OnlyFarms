@@ -9,6 +9,10 @@ namespace OnlyFarms.Models
         public int ID { get; set; }
 
         [Required]
+        [MaxLength(30)]
+        public string ClientName { get; set; }
+
+        [Required]
         public DateTime DeliveryDate { get; set; }
 
     }

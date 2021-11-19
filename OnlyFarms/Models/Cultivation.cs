@@ -20,10 +20,8 @@ namespace OnlyFarms.Models
 
         public int FieldID { get; set; }
         
-        [ForeignKey("Crop")]
         public Crop Crop { get; set; }
 
-        [ForeignKey("Field")]
         public Field Field { get; set; }
     }
 }

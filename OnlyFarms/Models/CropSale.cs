@@ -16,8 +16,6 @@ namespace OnlyFarms.Models
         public DateTime? SaleDate { get; set; }
 
         public int CropID { get; set; }
-
-        [ForeignKey("Crop")]
         public Crop Crop { get; set; }
     }
 }

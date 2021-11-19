@@ -27,16 +27,12 @@ namespace OnlyFarms.Models
         public int MachineID { get; set; }
         public int WorkerID { get; set; }
         
-        [ForeignKey("Field")]
         public Field Field { get; set; }
         
-        [ForeignKey("Equipment")]
         public Equipment Equipment { get; set; }
 
-        [ForeignKey("Machine")]
         public Machine Machine { get; set; }
 
-        [ForeignKey("Worker")]
         public Worker Worker { get; set; }
         public ICollection<Supply> Supplies { get; set; }
     }

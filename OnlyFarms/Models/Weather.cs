@@ -36,7 +36,6 @@ namespace OnlyFarms.Models
         public DateTime Date { get; set; }
         public int FieldID { get; set; }
 
-        [ForeignKey("Field")]
         public Field Field { get; set; }
     }
 }
