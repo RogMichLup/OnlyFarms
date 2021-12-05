@@ -1,0 +1,69 @@
+﻿@model OnlyFarms.Models.Weather
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Weather</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Temperature" class="control-label"></label>
+                <input asp-for="Temperature" class="form-control" />
+                <span asp-validation-for="Temperature" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Moisture" class="control-label"></label>
+                <input asp-for="Moisture" class="form-control" />
+                <span asp-validation-for="Moisture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirPressure" class="control-label"></label>
+                <input asp-for="AirPressure" class="form-control" />
+                <span asp-validation-for="AirPressure" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RainfallAmount" class="control-label"></label>
+                <input asp-for="RainfallAmount" class="form-control" />
+                <span asp-validation-for="RainfallAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WindDirection" class="control-label"></label>
+                <input asp-for="WindDirection" class="form-control" />
+                <span asp-validation-for="WindDirection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WindSpeed" class="control-label"></label>
+                <input asp-for="WindSpeed" class="form-control" />
+                <span asp-validation-for="WindSpeed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FieldID" class="control-label"></label>
+                <select asp-for="FieldID" class="form-control" asp-items="ViewBag.FieldID"></select>
+                <span asp-validation-for="FieldID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

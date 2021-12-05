@@ -1,0 +1,53 @@
+﻿@model IEnumerable<OnlyFarms.Models.Cultivation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaInHectar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CropStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Crop)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Field)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaInHectar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CropStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Crop.CropName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Field.City)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
