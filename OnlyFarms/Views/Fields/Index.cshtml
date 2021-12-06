@@ -4,50 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="text-center">
+    <h1>Pola</h1>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Tag)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Street)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FieldSurface)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tag)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Street)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FieldSurface)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
+@foreach (var item in Model)
+{
+    <div class="tile1">
+        <div class="overlay1">
+            <i class="icon-location" style=" font-size: 70px;" onclick="location.href='Fields/Details/@item.ID';"></i>
+            <a class="link">
+                <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Fields/Delete/@item.ID';"></i>
+                <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Tag)</p>
+                <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Fields/Edit/@item.ID';"></i>
+            </a>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+<div class="tile1" onclick="location.href='CropSales/Create';">
+    <div class="overlay1">
+        <i class="icon-plus" style=" font-size: 70px;"></i>
+    </div>
+</div>

@@ -4,74 +4,55 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="text-center">
+    <h1>Zabiegi</h1>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Label)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DurationInHours)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Field)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Equipment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Machine)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Worker)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Label)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DurationInHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Field.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Equipment.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Machine.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Worker.FirstName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
+@foreach (var item in Model)
+{
+    @if (item.Status == "Done")
+    {
+        <div class="tile1" style="background-color: #00a651">
+            <div class="overlay1">
+                <i class="icon-calendar-check-o" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
+                <a class="link">
+                    <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Delete/@item.ID';"></i>
+                    <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Label)</p>
+                    <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Edit/@item.ID';"></i>
+                </a>
+            </div>
+        </div>
+    }
+    @if (item.Status == "To do")
+    {
+        <div class="tile1" style="background-color: #ff0000">
+            <div class="overlay1">
+                <i class="icon-calendar-empty" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
+                <a class="link">
+                    <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Delete/@item.ID';"></i>
+                    <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Label)</p>
+                    <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Edit/@item.ID';"></i>
+                </a>
+            </div>
+        </div>
+    }
+    @if (item.Status == "In progress")
+    {
+        <div class="tile1" style="background-color: #ffd800">
+            <div class="overlay1">
+                <i class="icon-spin4" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
+                <a class="link">
+                    <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Delete/@item.ID';"></i>
+                    <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Label)</p>
+                    <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Edit/@item.ID';"></i>
+                </a>
+            </div>
+        </div>
+    }
+
 }
-    </tbody>
-</table>
+<div class="tile1" onclick="location.href='Procedures/Create';">
+    <div class="overlay1">
+        <i class="icon-plus" style=" font-size: 70px;"></i>
+    </div>
+</div>

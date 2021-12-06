@@ -1,0 +1,385 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+body {
+    background-color: #303030;
+    color: #ffffff;
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+}
+
+#container
+{
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.rectangle
+{
+    width: 960px;
+    margin: 20px;
+}
+.square
+{
+    width: 50%;
+    float: left;
+}
+#logo
+{
+    float: left;
+    font-size: 48px;
+    width: 600px;
+}
+.tile1
+{
+    margin: 10px;
+    width: 230px;
+    height: 142px;
+    background-color: #3095d3;
+    float: left;
+    text-align:center;
+    font-size: 20px;
+}
+.tile1:hover
+{
+    background-color: #2084c2;
+}
+.overlay {
+    position: relative;
+    width: 230px;
+    height: 142px;
+}
+.overlay .link
+{
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 65px;
+    background-color: #111;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.overlay:hover .link
+{
+    opacity: 0.8;
+}
+.tile2 {
+    margin: 10px;
+    width: 230px;
+    height: 142px;
+    background-color: #666666;
+    float: left;
+    text-align: center;
+}
+.tile2:hover 
+{
+    background-color: #555555;
+}
+.tile3 {
+    margin: 10px;
+    width: 230px;
+    height: 142px;
+    background-color: #00a651;
+    float: left;
+    text-align: center;
+}
+.tile3:hover 
+{
+    background-color: #009540;
+}
+.tile4 {
+    margin: 10px;
+    width: 480px;
+    height: 142px;
+    background-color: #ee5a32;
+    text-align: center;
+}
+.image {
+    text-align: center;
+    color: black;
+    width: 500px;
+    height: 635px;
+    margin: 10px;
+}
+.overlayI {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.overlayI .link {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: antiquewhite;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.overlayI:hover .link {
+    opacity: 0.9;
+}
+.icon
+{
+    display:block;
+    top: 40%;
+    position: relative;
+}
+#motto {
+    margin-top: auto;
+    margin-left: auto;
+    margin: 20px;
+    top: 50%;
+    transform: translateY(50%);
+}
+
+#font {
+    width: 350px;
+    float: left;
+    text-align: right;
+    font-size: 58px;
+    color: white;
+}
+.workers
+{
+    text-align:center;
+    font-size: 50px;
+}
+
+.photo {
+    font-size: 70px;
+    width: 450px;
+    font-weight:900;
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+    float: left;
+}
+.photo:hover {
+    -webkit-transform: scale(0.9);
+	-ms-transform: scale(0.9);
+	transform: scale(0.9);
+}
+.overlayP {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.overlayP .link {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 100px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.overlayP:hover .link {
+    opacity: 1;
+}
+
+.addworker {
+    margin: 10px;
+    width: 230px;
+    height: 142px;
+    background-color: grey;
+    float: left;
+    text-align: center;
+    font-size: 20px;
+}
+.addworker:hover {
+    width: 230px;
+    height: 284px;
+    background-color: lightgray;
+}
+
+.overlayadd {
+    position: relative;
+    width: 230px;
+    height: 284px;
+    text-align: center;
+}
+.overlayadd .link
+{
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #111;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.overlayadd:hover .link
+{
+    opacity: 0.8;
+}
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+.login {
+    font-size: 20px;
+    border-color:gray;
+    border-left-style: dotted;
+    border-right-style: dotted;
+    color:antiquewhite;
+    text-decoration: none;
+}
+a.login {
+    text-decoration: none;
+}
+.login:link{
+
+}
+
+.experience1_inside {
+    -webkit-box-shadow: 5px 5px 20px 3px #009540;
+    -moz-box-shadow: 5px 5px 20px 3px #009540;
+    box-shadow: 5px 5px 20px 3px #009540;
+    position: relative;
+    left: 20px;
+    top: 20px;
+    height: 180px;
+    width: 200px;
+    background-color: #00a651;
+    margin-bottom:20px;
+    text-align:center;
+}
+.experience1_inside:hover {
+    transition: height 2s;
+    height: 350px;
+    width: 960px;
+    text-align: left;
+}
+.overlayexp {
+    margin: 10px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.overlayexp .link {
+    display: block;
+    color: aliceblue;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.overlayexp:hover .link {
+    opacity: 1;
+}
+.visit_inside {
+    -webkit-box-shadow: 5px 5px 20px 3px #009540;
+    -moz-box-shadow: 5px 5px 20px 3px #009540;
+    box-shadow: 5px 5px 20px 3px #009540;
+    position: relative;
+    left: 20px;
+    top: 20px;
+    height: 180px;
+    width: 200px;
+    background-color: #00a651;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.visit_inside:hover {
+    transition: height 2s;
+    height: 300px;
+    width: 300px;
+    text-align: left;
+}
+.overlayvisit {
+    margin: 10px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.overlayvisit .link {
+    display: block;
+    color: aliceblue;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.overlayvisit:hover .link {
+    opacity: 1;
+}
+
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
