@@ -12,6 +12,7 @@
     @if (item.Status == "Done") {
         <div class="tile1" style="background-color: #00a651">
             <div class="overlay1">
+                @Html.DisplayFor(modelItem => item.Label) <br />
                 <i class="icon-calendar-check-o" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
                 <a class="link">
                     @if (User.IsInRole("admin")) {
@@ -26,6 +27,7 @@
     @if (item.Status == "To do") {
         <div class="tile1" style="background-color: #ff0000">
             <div class="overlay1">
+                @Html.DisplayFor(modelItem => item.Label) <br />
                 <i class="icon-calendar-empty" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
                 <a class="link">
                     @if (User.IsInRole("admin")) {
@@ -40,6 +42,7 @@
     @if (item.Status == "In progress") {
         <div class="tile1" style="background-color: #ffd800">
             <div class="overlay1">
+                @Html.DisplayFor(modelItem => item.Label) <br />
                 <i class="icon-spin4" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
                 <a class="link">
                     @if (User.IsInRole("admin")) {

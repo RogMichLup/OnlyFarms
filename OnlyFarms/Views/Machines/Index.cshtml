@@ -11,6 +11,7 @@
     @if (item.Status == "Fine") {
         <div class="tile1" style="background-color: #00a651">
             <div class="overlay1">
+                @Html.DisplayFor(modelItem => item.Name) <br />
                 <i class="icon-steering-wheel" style=" font-size: 70px;" onclick="location.href='Machines/Details/@item.ID';"></i>
                 <a class="link">
                     @if (User.IsInRole("admin")) {
@@ -25,6 +26,7 @@
     @if (item.Status == "For repair") {
         <div class="tile1" style="background-color: #ff0000">
             <div class="overlay1">
+                @Html.DisplayFor(modelItem => item.Name) <br />
                 <i class="icon-tools" style=" font-size: 70px;" onclick="location.href='Machines/Details/@item.ID';"></i>
                 <a class="link">
                     @if (User.IsInRole("admin")) {
@@ -39,6 +41,7 @@
     @if (item.Status == "For clean up") {
         <div class="tile1" style="background-color: #ffd800">
             <div class="overlay1">
+                @Html.DisplayFor(modelItem => item.Name) <br />
                 <i class="icon-bucket" style=" font-size: 70px;" onclick="location.href='Machines/Details/@item.ID';"></i>
                 <a class="link">
                     @if (User.IsInRole("admin")) {
