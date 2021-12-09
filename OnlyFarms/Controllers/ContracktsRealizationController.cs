@@ -18,14 +18,6 @@ namespace OnlyFarms.Controllers
             _context = context;
         }
 
-        //public async Task<IActionResult> Index(int id)
-        //{
-
-        //    int percentageOfContractCompletion = id;
-        //    ViewBag.percentageOfContractCompletion = percentageOfContractCompletion;
-        //    return View();
-        //}
-
         public async Task<IActionResult> Show(int? id)
         {
             if (id == null)
@@ -33,13 +25,13 @@ namespace OnlyFarms.Controllers
                 return NotFound();
             }
 
-            ContractCrop contract = await _context.ContractCrops
+            ContractCrop contractCrop = await _context.ContractCrops
                                 .Include(s => s.Contract)
                                 .Include(s => s.Crop)
                                 .Where(s => s.ContractID == id)
                                 .FirstOrDefaultAsync(s => s.ID == id);
 
-            if (contract == null)
+            if (contractCrop == null)
             {
                 return NotFound();
             }
@@ -47,7 +39,7 @@ namespace OnlyFarms.Controllers
             List<Cultivation> cultivations = await _context.Cultivations
                                  .Include(s => s.Crop)
                                  .Include(s => s.Field)
-                                 .Where(s => s.CropID == contract.CropID)
+                                 .Where(s => s.CropID == contractCrop.CropID)
                                  .ToListAsync();
 
             double percentageOfContractCompletion = 0;
@@ -66,7 +58,7 @@ namespace OnlyFarms.Controllers
                     expectedYieldFromCultivations += cultivations[i].Crop.ExpectedYield * cultivations[i].AreaInHectar;
                 }
 
-                percentageOfContractCompletion = ((double)expectedYieldFromCultivations / (double)contract.Quantity) * 100;
+                percentageOfContractCompletion = ((double)expectedYieldFromCultivations / (double)contractCrop.Quantity) * 100;
             }
 
             ViewBag.percentageOfContractCompletion = percentageOfContractCompletion;

@@ -99,6 +99,45 @@ namespace OnlyFarms.Controllers {
             ViewBag.crops = crops;
             List<ContractCrop> contractCrops = await _context.ContractCrops.Where(p => p.ContractID == contract.ID).ToListAsync();
             ViewBag.contractCrops = contractCrops;
+            
+            ContractCrop contractCrop = await _context.ContractCrops
+                               .Include(s => s.Contract)
+                               .Include(s => s.Crop)
+                               .Where(s => s.ContractID == id)
+                               .FirstOrDefaultAsync(s => s.ID == id);
+
+            if (contractCrop == null)
+            {
+                return NotFound();
+            }
+
+            List<Cultivation> cultivations = await _context.Cultivations
+                                 .Include(s => s.Crop)
+                                 .Include(s => s.Field)
+                                 .Where(s => s.CropID == contractCrop.CropID)
+                                 .ToListAsync();
+
+            double percentageOfContractCompletion = 0;
+
+            if (cultivations.Count == 0)
+            {
+                ViewBag.percentageOfContractCompletion = percentageOfContractCompletion;
+                return View();
+            }
+            else
+            {
+                int expectedYieldFromCultivations = 0;
+
+                for (int i = 0; i < cultivations.Count; i++)
+                {
+                    expectedYieldFromCultivations += cultivations[i].Crop.ExpectedYield * cultivations[i].AreaInHectar;
+                }
+
+                percentageOfContractCompletion = ((double)expectedYieldFromCultivations / (double)contractCrop.Quantity) * 100;
+            }
+
+            ViewBag.percentageOfContractCompletion = percentageOfContractCompletion;
+
             return View(contract);
         }
 
