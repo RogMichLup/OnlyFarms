@@ -4,6 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
+
 <h1>Create</h1>
 
 <h4>Contract</h4>
@@ -22,17 +23,34 @@
                 <input asp-for="DeliveryDate" class="form-control" />
                 <span asp-validation-for="DeliveryDate" class="text-danger"></span>
             </div>
+            <div>
+                <table>
+                    <tr>
+                        <td>Name</td>
+                        <td>Count</td>
+                        <td></td>
+                    </tr>
+                    @foreach (Crop item in ViewBag.crops) {
+                        <tr>
+                            <td>@item.CropName</td>
+                            <td><input type="number" name="in+@item.ID" min="0"/></td>
+                            <td><input type="checkbox" name="cx+@item.ID"></td>
+                        </tr>
+                    }
+                </table>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

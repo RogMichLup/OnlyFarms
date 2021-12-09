@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Edit";
+    int cropCount = 0;
+
 }
 
 <h1>Edit</h1>
@@ -22,6 +24,39 @@
                 <label asp-for="DeliveryDate" class="control-label"></label>
                 <input asp-for="DeliveryDate" class="form-control" />
                 <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td>Name</td>
+                        <td>Count</td>
+                        <td></td>
+                    </tr>
+                    @foreach (Crop item in ViewBag.crops) {
+                <tr>
+                    @foreach (ContractCrop ctcr in ViewBag.contractCrops) {
+                        if (ctcr.CropID == item.ID) {
+                            cropCount = ctcr.Quantity;
+                            break;
+                        }
+                        else cropCount = 0;
+                    }
+                    <td>@item.CropName</td>
+                    <td><input type="number" name="in+@item.ID" min="0" value=@cropCount /></td>
+                    @if (cropCount != 0) {
+                        <td>
+                            <input type="checkbox" name="cx+@item.ID" checked />
+                        </td>
+                    }
+                    else {
+                        <td>
+                            <input type="checkbox" name="cx+@item.ID"  />
+                        </td>
+                    }
+
+                </tr>
+                    }
+                </table>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

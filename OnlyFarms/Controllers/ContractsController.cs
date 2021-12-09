@@ -8,44 +8,45 @@ using Microsoft.EntityFrameworkCore;
 using OnlyFarms.Data;
 using OnlyFarms.Models;
 
-namespace OnlyFarms.Controllers
-{
-    public class ContractsController : Controller
-    {
+namespace OnlyFarms.Controllers {
+    public class ContractsController : Controller {
         private readonly FarmContext _context;
+        private List<Crop> crops;
 
-        public ContractsController(FarmContext context)
-        {
+        public ContractsController(FarmContext context) {
             _context = context;
+            crops = _context.Crops.ToList();
+            ViewBag.crops = crops;
         }
 
         // GET: Contracts
-        public async Task<IActionResult> Index()
-        {
+        public async Task<IActionResult> Index() {
             return View(await _context.Contracts.ToListAsync());
         }
 
         // GET: Contracts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Details(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
             var contract = await _context.Contracts
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (contract == null)
-            {
+            if (contract == null) {
                 return NotFound();
             }
 
+            crops = await _context.Crops.ToListAsync();
+            ViewBag.crops = crops;
+            List<ContractCrop> contractCrops = await _context.ContractCrops.Where(p => p.ContractID == contract.ID).ToListAsync();
+            ViewBag.contractCrops = contractCrops;
             return View(contract);
         }
 
         // GET: Contracts/Create
-        public IActionResult Create()
-        {
+        public async Task<IActionResult> Create() {
+            crops = await _context.Crops.ToListAsync();
+            ViewBag.crops = crops;
             return View();
         }
 
@@ -54,30 +55,50 @@ namespace OnlyFarms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,ClientName,DeliveryDate")] Contract contract)
-        {
-            if (ModelState.IsValid)
-            {
+        public async Task<IActionResult> Create([Bind("ID,ClientName,DeliveryDate")] Contract contract) {
+            if (ModelState.IsValid) {
                 _context.Add(contract);
                 await _context.SaveChangesAsync();
+                List<Contract> contracts = await _context.Contracts.ToListAsync();
+                int lastID = contracts.Last().ID;
+                foreach (Crop item in crops) {
+                    string isChecked = Request.Form["cx+" + item.ID].ToString();
+                    if (isChecked == "on") {
+                        string requestString = Request.Form["in+" + item.ID].ToString();
+                        int cropCount = new int();
+                        if (Int32.TryParse(requestString, out cropCount)) {
+                            ContractCrop ctcr = new ContractCrop();
+                            ctcr.ContractID = lastID;
+                            ctcr.Contract = contracts.Last();
+                            ctcr.CropID = item.ID;
+                            ctcr.Crop = crops.Find(p => p.ID == item.ID);
+                            ctcr.Quantity = cropCount;
+
+                            _context.Add(ctcr);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(contract);
         }
 
         // GET: Contracts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Edit(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
             var contract = await _context.Contracts.FindAsync(id);
-            if (contract == null)
-            {
+            if (contract == null) {
                 return NotFound();
             }
+
+            crops = await _context.Crops.ToListAsync();
+            ViewBag.crops = crops;
+            List<ContractCrop> contractCrops = await _context.ContractCrops.Where(p => p.ContractID == contract.ID).ToListAsync();
+            ViewBag.contractCrops = contractCrops;
             return View(contract);
         }
 
@@ -86,28 +107,68 @@ namespace OnlyFarms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,ClientName,DeliveryDate")] Contract contract)
-        {
-            if (id != contract.ID)
-            {
+        public async Task<IActionResult> Edit(int id, [Bind("ID,ClientName,DeliveryDate")] Contract contract) {
+            if (id != contract.ID) {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
+            if (ModelState.IsValid) {
+                try {
                     _context.Update(contract);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
+                    Contract contracts = await _context.Contracts.Where(p => p.ID == contract.ID).FirstAsync();
+                    foreach (Crop item in crops) {
+                        string isChecked = Request.Form["cx+" + item.ID].ToString();
+                        List<ContractCrop> contractCrops = await _context.ContractCrops.Where(p => p.ContractID == contract.ID && p.CropID == item.ID).ToListAsync();
+                        if (contractCrops.Count == 1) {
+                            if (isChecked == "on") {
+                                string requestString = Request.Form["in+" + item.ID].ToString();
+                                int cropCount = new int();
+                                if (Int32.TryParse(requestString, out cropCount)) {
+                                    ContractCrop ctcr = new ContractCrop();
+                                    contractCrops.Last().Quantity = cropCount;
+
+                                    await _context.SaveChangesAsync();
+                                }
+                            }
+                            else {
+                                string requestString = Request.Form["in+" + item.ID].ToString();
+
+                                ContractCrop ctcr = contractCrops.Last();
+                                _context.Entry(ctcr).State = EntityState.Deleted;
+
+                                _context.SaveChanges();
+                                await _context.SaveChangesAsync();
+
+                            }
+                        }
+                        else {
+                            if (isChecked == "on") {
+                                if (isChecked == "on") {
+                                    string requestString = Request.Form["in+" + item.ID].ToString();
+                                    int cropCount = new int();
+                                    if (Int32.TryParse(requestString, out cropCount)) {
+                                        ContractCrop ctcr = new ContractCrop();
+                                        ctcr.ContractID = contract.ID;
+                                        ctcr.Contract = contracts;
+                                        ctcr.CropID = item.ID;
+                                        ctcr.Crop = crops.Find(p => p.ID == item.ID);
+                                        ctcr.Quantity = cropCount;
+
+                                        _context.Add(ctcr);
+                                        await _context.SaveChangesAsync();
+                                    }
+                                }
+                            }
+                        }
+
+                    }
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ContractExists(contract.ID))
-                    {
+                catch (DbUpdateConcurrencyException) {
+                    if (!ContractExists(contract.ID)) {
                         return NotFound();
                     }
-                    else
-                    {
+                    else {
                         throw;
                     }
                 }
@@ -117,17 +178,14 @@ namespace OnlyFarms.Controllers
         }
 
         // GET: Contracts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Delete(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
             var contract = await _context.Contracts
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (contract == null)
-            {
+            if (contract == null) {
                 return NotFound();
             }
 
@@ -137,17 +195,21 @@ namespace OnlyFarms.Controllers
         // POST: Contracts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        public async Task<IActionResult> DeleteConfirmed(int id) {
             var contract = await _context.Contracts.FindAsync(id);
+            List<ContractCrop> contractCrops = await _context.ContractCrops.Where(p => p.ContractID == contract.ID).ToListAsync();
+            foreach(var item in contractCrops) {
+                _context.Entry(item).State = EntityState.Deleted;
+                _context.SaveChanges();
+            }
             _context.Contracts.Remove(contract);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContractExists(int id)
-        {
+        private bool ContractExists(int id) {
             return _context.Contracts.Any(e => e.ID == id);
         }
+
     }
 }

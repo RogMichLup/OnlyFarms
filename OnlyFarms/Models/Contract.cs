@@ -15,5 +15,6 @@ namespace OnlyFarms.Models
         [Required]
         public DateTime DeliveryDate { get; set; }
 
+
     }
 }

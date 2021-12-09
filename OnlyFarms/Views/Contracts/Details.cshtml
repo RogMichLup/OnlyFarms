@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    int cropCount = 0;
 }
 
 <h1>Details</h1>
@@ -10,17 +11,50 @@
     <h4>Contract</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ClientName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ClientName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DeliveryDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DeliveryDate)
+        </dd>
+        <dt class="col-sm-2">
+            Crops in contract:
+        </dt>
+        <dd class="col-sm-10">
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td>Count</td>
+                    <td></td>
+                </tr>
+                @foreach (Crop item in ViewBag.crops) {
+                    <tr>
+                        @foreach (ContractCrop ctcr in ViewBag.contractCrops) {
+                            if (ctcr.CropID == item.ID) {
+                                cropCount = ctcr.Quantity;
+                                break;
+                            }
+                            else cropCount = 0;
+                        }
+                        @if (cropCount != 0) {
+                            <td>@item.CropName</td>
+                            <td>@cropCount</td>
+                        }
+                        else {
+                            <td>
+                                <input type="checkbox" name="cx+@item.ID" />
+                            </td>
+                        }
+
+                    </tr>
+                }
+            </table>
         </dd>
     </dl>
 </div>
