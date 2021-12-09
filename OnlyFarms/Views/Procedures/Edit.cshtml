@@ -80,6 +80,40 @@
                 <span asp-validation-for="WorkerID" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <table>
+                    <tr>
+                        <td>Name</td>
+                        <td></td>
+                    </tr>
+                    @foreach (Supply item in ViewBag.supplies)
+                    {
+                        bool check = false;
+
+                        foreach (Supply supply in ViewBag.suppliesInProcedure)
+                        {
+                            if (item == supply)
+                            {
+                                check = true;
+                            }
+                        }
+                        if (check)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td><input type="checkbox" name="cx+@item.ID" checked></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td><input type="checkbox" name="cx+@item.ID"></td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

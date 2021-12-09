@@ -14,10 +14,13 @@ namespace OnlyFarms.Controllers
     public class ProceduresController : Controller
     {
         private readonly FarmContext _context;
+        private List<Supply> supplies;
 
         public ProceduresController(FarmContext context)
         {
             _context = context;
+            supplies = _context.Supplies.ToList();
+            ViewBag.supplies = supplies;
         }
 
         // GET: Procedures
@@ -40,6 +43,7 @@ namespace OnlyFarms.Controllers
                 .Include(p => p.Field)
                 .Include(p => p.Machine)
                 .Include(p => p.Worker)
+                .Include(p => p.Supplies)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (procedure == null)
             {
@@ -57,6 +61,7 @@ namespace OnlyFarms.Controllers
             ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City");
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Name");
             ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName");
+            ViewBag.supplies = supplies;
             return View();
         }
 
@@ -70,6 +75,15 @@ namespace OnlyFarms.Controllers
         {
             if (ModelState.IsValid)
             {
+                procedure.Supplies = new List<Supply>();
+                foreach (Supply item in supplies)
+                {
+                    string isChecked = Request.Form["cx+" + item.ID].ToString();
+                    if (isChecked == "on")
+                    {
+                        procedure.Supplies.Add(item);
+                    }
+                }
                 _context.Add(procedure);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -84,6 +98,8 @@ namespace OnlyFarms.Controllers
         // GET: Procedures/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            
+
             if (id == null)
             {
                 return NotFound();
@@ -94,10 +110,20 @@ namespace OnlyFarms.Controllers
             {
                 return NotFound();
             }
+
+            List<Supply> suppliesInProcedure;
+
+            suppliesInProcedure = await _context.Supplies
+                .Include(s => s.Procedures)
+                .Where(s => s.Procedures.Contains(procedure))
+                .ToListAsync();
+
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "ID", "Name", procedure.EquipmentID);
             ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City", procedure.FieldID);
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Name", procedure.MachineID);
             ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName", procedure.WorkerID);
+            ViewBag.suppliesInProcedure = suppliesInProcedure;
+            ViewBag.supplies = supplies;
             return View(procedure);
         }
 
@@ -108,6 +134,15 @@ namespace OnlyFarms.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Label,StartDate,DurationInHours,Status,FieldID,EquipmentID,MachineID,WorkerID")] Procedure procedure)
         {
+
+            var procedureSupply = await _context.Procedures
+                .Include(p => p.Equipment)
+                .Include(p => p.Field)
+                .Include(p => p.Machine)
+                .Include(p => p.Worker)
+                .Include(p => p.Supplies)
+                .FirstOrDefaultAsync(m => m.ID == id);
+
             if (id != procedure.ID)
             {
                 return NotFound();
@@ -117,8 +152,30 @@ namespace OnlyFarms.Controllers
             {
                 try
                 {
-                    _context.Update(procedure);
+                    _context.Update(procedureSupply);
+                    _context.SaveChanges();
+
+                    procedureSupply.Supplies = new List<Supply>();
+                    foreach (Supply item in supplies)
+                    {
+                        string isChecked = Request.Form["cx+" + item.ID].ToString();
+                        if (isChecked == "on")
+                        {
+                            procedureSupply.Supplies.Add(item);
+                        }
+                    }
+
+                    procedureSupply.DurationInHours = procedure.DurationInHours;
+                    procedureSupply.EquipmentID = procedure.EquipmentID;
+                    procedureSupply.FieldID = procedure.FieldID;
+                    procedureSupply.Label = procedure.Label;
+                    procedureSupply.MachineID = procedure.MachineID;
+                    procedureSupply.WorkerID = procedure.WorkerID;
+                    procedureSupply.StartDate = procedure.StartDate;
+                    procedureSupply.Status = procedure.Status;
+
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -154,6 +211,7 @@ namespace OnlyFarms.Controllers
                 .Include(p => p.Field)
                 .Include(p => p.Machine)
                 .Include(p => p.Worker)
+                .Include(p => p.Supplies)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (procedure == null)
             {
