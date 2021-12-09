@@ -39,10 +39,46 @@ namespace OnlyFarms.Controllers
                 .Include(c => c.Crop)
                 .Include(c => c.Field)
                 .FirstOrDefaultAsync(m => m.ID == id);
+            
             if (cultivation == null)
             {
                 return NotFound();
             }
+
+            var allProceduresDone = await _context.Procedures
+                .Include(s => s.Field)
+                .Where(s => s.FieldID == cultivation.FieldID)
+                .Include(s => s.Equipment)
+                .Include(s => s.Machine)
+                .Include(s => s.Worker)
+                .Include(s => s.Supplies)
+                .ToListAsync();
+
+            var allCropSale = await _context.CropSales
+                .Include(s => s.Crop)
+                .Where(s => s.CropID == cultivation.CropID)
+                .ToListAsync();
+
+            var allContractCrop = await _context.ContractCrops
+                .Include(s => s.Crop)
+                .Where(s => s.CropID == cultivation.CropID)
+                .Include(s => s.Contract)
+                .ToListAsync();
+
+            double costBillanse = 0;
+
+            for (int i = 0; i < allProceduresDone.Count; i++)
+            {
+                costBillanse -= allProceduresDone[i].Worker.HourlyPay * (double)allProceduresDone[1].DurationInHours;
+                foreach (Supply s in allProceduresDone[i].Supplies)
+                {
+                    costBillanse -= s.PricePerKilo * s.SupplyAmountPerHectare * allProceduresDone[i].Field.FieldSurface;
+                }
+            }
+
+            costBillanse += (cultivation.Crop.ExpectedYield * cultivation.Field.FieldSurface) * cultivation.Crop.SellPricePerTonne;
+
+            ViewBag.costBillanse = costBillanse;
 
             return View(cultivation);
         }
