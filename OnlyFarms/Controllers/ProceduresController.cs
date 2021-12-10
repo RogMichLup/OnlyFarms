@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,7 @@ namespace OnlyFarms.Controllers
         }
 
         // GET: Procedures/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "ID", "Name");
@@ -63,6 +65,7 @@ namespace OnlyFarms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("ID,Label,StartDate,DurationInHours,Status,FieldID,EquipmentID,MachineID,WorkerID")] Procedure procedure)
         {
             if (ModelState.IsValid)
@@ -138,6 +141,7 @@ namespace OnlyFarms.Controllers
         }
 
         // GET: Procedures/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -162,6 +166,7 @@ namespace OnlyFarms.Controllers
         // POST: Procedures/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var procedure = await _context.Procedures.FindAsync(id);

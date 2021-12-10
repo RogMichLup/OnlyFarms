@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,7 @@ namespace OnlyFarms.Controllers
         }
 
         // GET: Cultivations/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             ViewData["CropID"] = new SelectList(_context.Crops, "ID", "CropName");
@@ -59,6 +61,7 @@ namespace OnlyFarms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("ID,AreaInHectar,CropStatus,CropID,FieldID")] Cultivation cultivation)
         {
             if (ModelState.IsValid)
@@ -73,6 +76,7 @@ namespace OnlyFarms.Controllers
         }
 
         // GET: Cultivations/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,6 +99,7 @@ namespace OnlyFarms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,AreaInHectar,CropStatus,CropID,FieldID")] Cultivation cultivation)
         {
             if (id != cultivation.ID)
@@ -128,6 +133,7 @@ namespace OnlyFarms.Controllers
         }
 
         // GET: Cultivations/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,6 +156,7 @@ namespace OnlyFarms.Controllers
         // POST: Cultivations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var cultivation = await _context.Cultivations.FindAsync(id);

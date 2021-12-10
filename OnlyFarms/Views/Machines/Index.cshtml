@@ -7,51 +7,55 @@
     <h1>Maszyny</h1>
 </div>
 
-@foreach (var item in Model)
-{
-    @if (item.Status == "Fine")
-    {
+@foreach (var item in Model) {
+    @if (item.Status == "Fine") {
         <div class="tile1" style="background-color: #00a651">
             <div class="overlay1">
                 <i class="icon-steering-wheel" style=" font-size: 70px;" onclick="location.href='Machines/Details/@item.ID';"></i>
                 <a class="link">
-                    <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Delete/@item.ID';"></i>
+                    @if (User.IsInRole("admin")) {
+                        <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Delete/@item.ID';"></i>
+                    }
                     <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Name)</p>
-                    <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Edit/@item.ID';"></i>
+                        <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Edit/@item.ID';"></i>
                 </a>
             </div>
         </div>
     }
-    @if (item.Status == "For repair")
-    {
+    @if (item.Status == "For repair") {
         <div class="tile1" style="background-color: #ff0000">
             <div class="overlay1">
                 <i class="icon-tools" style=" font-size: 70px;" onclick="location.href='Machines/Details/@item.ID';"></i>
                 <a class="link">
-                    <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Delete/@item.ID';"></i>
+                    @if (User.IsInRole("admin")) {
+                        <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Delete/@item.ID';"></i>
+                    }
                     <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Name)</p>
-                    <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Edit/@item.ID';"></i>
+                        <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Edit/@item.ID';"></i>
                 </a>
             </div>
         </div>
     }
-    @if (item.Status == "For clean up")
-    {
+    @if (item.Status == "For clean up") {
         <div class="tile1" style="background-color: #ffd800">
             <div class="overlay1">
                 <i class="icon-bucket" style=" font-size: 70px;" onclick="location.href='Machines/Details/@item.ID';"></i>
                 <a class="link">
-                    <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Delete/@item.ID';"></i>
+                    @if (User.IsInRole("admin")) {
+                        <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Delete/@item.ID';"></i>
+                    }
                     <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Name)</p>
-                    <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Edit/@item.ID';"></i>
+                        <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Machines/Edit/@item.ID';"></i>
                 </a>
             </div>
         </div>
     }
 
 }
-<div class="tile1" onclick="location.href='Machines/Create';">
-    <div class="overlay1">
-        <i class="icon-plus" style=" font-size: 70px;"></i>
+@if (User.IsInRole("admin")) {
+    <div class="tile1" onclick="location.href='Machines/Create';">
+        <div class="overlay1">
+            <i class="icon-plus" style=" font-size: 70px;"></i>
+        </div>
     </div>
-</div>
+}

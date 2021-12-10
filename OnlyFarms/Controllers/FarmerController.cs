@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace OnlyFarms.Controllers
 {
@@ -7,8 +11,15 @@ namespace OnlyFarms.Controllers
         // 
         // GET: /Farmer/ 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var claims = new List<Claim>()
+                  {
+                        new Claim(ClaimTypes.Name, "farmerTest"),
+                        new Claim(ClaimTypes.Role, "admin")
+                    };
+            var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
+            await HttpContext.SignInAsync("CookieAuthentication", new ClaimsPrincipal(claimsIdentity));
             return View();
         }
     }

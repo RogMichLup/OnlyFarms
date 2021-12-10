@@ -8,21 +8,26 @@
     <h1>Uprawy</h1>
 </div>
 
-@foreach (var item in Model)
-{
+@foreach (var item in Model) {
     <div class="tile1">
         <div class="overlay1">
             <i class="icon-pagelines" style=" font-size: 70px;" onclick="location.href='Cultivations/Details/@item.ID';"></i>
             <a class="link">
-                <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Cultivations/Delete/@item.ID';"></i>
+                @if (User.IsInRole("admin")) {
+                    <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Cultivations/Delete/@item.ID';"></i>
+                }
                 <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Field.Tag)</p>
-                <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Cultivations/Edit/@item.ID';"></i>
+                @if (User.IsInRole("admin")) {
+                    <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Cultivations/Edit/@item.ID';"></i>
+                }
             </a>
         </div>
     </div>
 }
-<div class="tile1" onclick="location.href='Cultivations/Create';">
-    <div class="overlay1">
-        <i class="icon-plus" style=" font-size: 70px;"></i>
+@if (User.IsInRole("admin")) {
+    <div class="tile1" onclick="location.href='Cultivations/Create';">
+        <div class="overlay1">
+            <i class="icon-plus" style=" font-size: 70px;"></i>
+        </div>
     </div>
-</div>
+}
