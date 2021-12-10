@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace OnlyFarms
 {
@@ -31,6 +32,19 @@ namespace OnlyFarms
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddControllersWithViews();
+
+            services.AddAuthentication("CookieAuthentication")
+            .AddCookie("CookieAuthentication", config => {
+                config.Cookie.HttpOnly = true;
+                config.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                config.Cookie.Name = "UserLoginCookie";
+                config.LoginPath = "/";
+                config.Cookie.SameSite = SameSiteMode.Strict;
+                services.AddMvc();
+            });
+
+            services.AddSession();
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +62,7 @@ namespace OnlyFarms
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
