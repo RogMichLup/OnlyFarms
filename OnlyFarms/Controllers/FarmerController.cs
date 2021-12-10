@@ -15,7 +15,7 @@ namespace OnlyFarms.Controllers
         {
             var claims = new List<Claim>()
                   {
-                        new Claim(ClaimTypes.Name, "farmerTest"),
+                        new Claim(ClaimTypes.Name, "farmer#0"),
                         new Claim(ClaimTypes.Role, "admin")
                     };
             var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
