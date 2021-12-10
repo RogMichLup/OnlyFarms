@@ -8,6 +8,7 @@
     <h1>Zabiegi</h1>
 </div>
 
+<<<<<<< Updated upstream
 @foreach (var item in Model)
 {
     @if (item.Status == "Done")
@@ -46,8 +47,52 @@
                     <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Label)</p>
                     <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Edit/@item.ID';"></i>
                 </a>
+=======
+@foreach (var item in Model) {
+    @if (item.WorkerID == Int32.Parse(User.Identity.Name.Remove(0, 7))) {
+        if (item.Status == "Done") {
+            <div class="tile1" style="background-color: #00a651">
+                <div class="overlay1">
+                    <i class="icon-calendar-check-o" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
+                    <a class="link">
+                        @if (User.IsInRole("admin")) {
+                            <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Delete/@item.ID';"></i>
+                        }
+                        <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Label)</p>
+                        <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Edit/@item.ID';"></i>
+                    </a>
+                </div>
             </div>
-        </div>
+        }
+        if (item.Status == "To do") {
+            <div class="tile1" style="background-color: #ff0000">
+                <div class="overlay1">
+                    <i class="icon-calendar-empty" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
+                    <a class="link">
+                        @if (User.IsInRole("admin")) {
+                            <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Delete/@item.ID';"></i>
+                        }
+                        <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Label)</p>
+                        <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Edit/@item.ID';"></i>
+                    </a>
+                </div>
+            </div>
+        }
+        if (item.Status == "In progress") {
+            <div class="tile1" style="background-color: #ffd800">
+                <div class="overlay1">
+                    <i class="icon-spin4" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
+                    <a class="link">
+                        @if (User.IsInRole("admin")) {
+                            <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Delete/@item.ID';"></i>
+                        }
+                        <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.Label)</p>
+                        <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Procedures/Edit/@item.ID';"></i>
+                    </a>
+                </div>
+>>>>>>> Stashed changes
+            </div>
+        }
     }
 
 }

@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+<div class="text-center">
+    <h1>Zaloguj</h1>
+</div>
+@foreach (Worker item in ViewBag.workers) {
+    <div class="tile1">
+        <div class="overlay1">
+            <i class="icon-user" style=" font-size: 70px;" onclick="location.href = 'LoginConfirmed/@item.ID';"></i>
+            <br />
+            @Html.DisplayFor(modelItem => item.FirstName)
+            @Html.DisplayFor(modelItem => item.Surname)
+        </div>
+    </div>
+}
