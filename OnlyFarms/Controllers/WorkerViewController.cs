@@ -1,6 +1,4 @@
-<<<<<<< Updated upstream
 ﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,20 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
->>>>>>> Stashed changes
 
 namespace OnlyFarms.Controllers
 {
     public class WorkerViewController : Controller
     {
-<<<<<<< Updated upstream
-        // 
-        // GET: /WorkerView/ 
-
-        public IActionResult Index()
-        {
-            return View();
-=======
         private readonly FarmContext _context;
         private List<Worker> workers;
         public WorkerViewController(FarmContext context) {
@@ -59,7 +48,6 @@ namespace OnlyFarms.Controllers
             var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
             await HttpContext.SignInAsync("CookieAuthentication", new ClaimsPrincipal(claimsIdentity));
             return RedirectToAction(nameof(Index));
->>>>>>> Stashed changes
         }
     }
 }
