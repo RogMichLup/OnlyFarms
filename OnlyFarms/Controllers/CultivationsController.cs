@@ -14,6 +14,7 @@ namespace OnlyFarms.Controllers
     public class CultivationsController : Controller
     {
         private readonly FarmContext _context;
+        private const double fuelPrice = 5.5;
 
         public CultivationsController(FarmContext context)
         {
@@ -70,13 +71,17 @@ namespace OnlyFarms.Controllers
             for (int i = 0; i < allProceduresDone.Count; i++)
             {
                 costBillanse -= allProceduresDone[i].Worker.HourlyPay * (double)allProceduresDone[1].DurationInHours;
+                costBillanse -= (double)allProceduresDone[i].DurationInHours * allProceduresDone[1].Machine.FuelUsageRate * fuelPrice;
+                // if utilization cost will be per motohour
+                //costBillanse -= (double)allProceduresDone[i].DurationInHours * allProceduresDone[1].Machine.UtilizationCost;
+                //costBillanse -= (double)allProceduresDone[i].DurationInHours * allProceduresDone[1].Equipment.UtilizationCost;
                 foreach (Supply s in allProceduresDone[i].Supplies)
                 {
                     costBillanse -= s.PricePerKilo * s.SupplyAmountPerHectare * allProceduresDone[i].Field.FieldSurface;
                 }
             }
 
-            costBillanse += (cultivation.Crop.ExpectedYield * cultivation.Field.FieldSurface) * cultivation.Crop.SellPricePerTonne;
+            costBillanse += (cultivation.Crop.ExpectedYield * cultivation.AreaInHectar) * cultivation.Crop.SellPricePerTonne;
 
             ViewBag.costBillanse = costBillanse;
 
