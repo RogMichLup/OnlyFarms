@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CropID" class="control-label"></label>
-                <select asp-for="CropID" class ="form-control" asp-items="ViewBag.CropID"></select>
+                <select asp-for="CropID" class ="form-control" asp-items="ViewBag.CropID"><option hidden selected>Select one...</option></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
