@@ -57,9 +57,9 @@ namespace OnlyFarms.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewData["EquipmentID"] = new SelectList(_context.Equipments, "ID", "Name");
+            ViewData["EquipmentID"] = new SelectList(_context.Equipments.Where(s => s.Status != "For repair"), "ID", "Name");
             ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City");
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Name");
+            ViewData["MachineID"] = new SelectList(_context.Machines.Where(s => s.Status != "For repair"), "ID", "Name");
             ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName");
             ViewBag.supplies = supplies;
             return View();
@@ -92,6 +92,7 @@ namespace OnlyFarms.Controllers
             ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City", procedure.FieldID);
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Name", procedure.MachineID);
             ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName", procedure.WorkerID);
+            ViewBag.supplies = supplies;
             return View(procedure);
         }
 
