@@ -36,6 +36,14 @@ namespace OnlyFarms.Controllers
 
             var @field = await _context.Fields
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            List<Cultivation> cultivations = await _context.Cultivations
+                                                    .Include(c => c.Crop)
+                                                    .Include(c => c.Field)
+                                                    .Where(c => c.FieldID == field.ID)
+                                                    .ToListAsync();
+            ViewBag.cultivations = cultivations;
+
             if (@field == null)
             {
                 return NotFound();
