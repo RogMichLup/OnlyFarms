@@ -33,20 +33,25 @@
                     <td>Count</td>
                     <td></td>
                 </tr>
-                @foreach (Crop item in ViewBag.crops) {
+                @foreach (Crop item in ViewBag.crops)
+                {
                     <tr>
-                        @foreach (ContractCrop ctcr in ViewBag.contractCrops) {
-                            if (ctcr.CropID == item.ID) {
+                        @foreach (ContractCrop ctcr in ViewBag.contractCrops)
+                        {
+                            if (ctcr.CropID == item.ID)
+                            {
                                 cropCount = ctcr.Quantity;
                                 break;
                             }
                             else cropCount = 0;
                         }
-                        @if (cropCount != 0) {
+                        @if (cropCount != 0)
+                        {
                             <td>@item.CropName</td>
                             <td>@cropCount</td>
                         }
-                        else {
+                        else
+                        {
                             <td>
                                 <input type="checkbox" name="cx+@item.ID" />
                             </td>
@@ -56,12 +61,19 @@
                 }
             </table>
         </dd>
+
         <dt class="col-sm-2">
             Contrackt realization progress
         </dt>
-        <dd class="col-sm-10">
-            <progress value="22" max="100">@ViewBag.percentageOfContractCompletion %</progress>
-        </dd>
+
+        @foreach (double item in ViewBag.percentageOfContractCompletionList)
+        {
+            <dd class="col-sm-10">
+                <progress value="@item" max="100">@item %</progress>
+            </dd>
+            <dt class="col-sm-2">
+            </dt>
+        }
     </dl>
 </div>
 <div>
