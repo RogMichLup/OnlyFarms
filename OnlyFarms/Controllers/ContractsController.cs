@@ -75,7 +75,7 @@ namespace OnlyFarms.Controllers {
 
                 if (cultivations.Count == 0)
                 {
-                    ViewBag.percentageOfContractCompletion = percentageOfContractCompletion;
+                    ViewBag.percentageOfContractCompletionList = percentageOfContractCompletionList;
                     return View();
                 }
                 else

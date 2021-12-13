@@ -92,7 +92,9 @@ namespace OnlyFarms.Data
 
             var equipments = new Equipment[]
             {
-                new Equipment{ UtilizationCost = 100, Name="Amazone", Status="Fine"}
+                new Equipment{ UtilizationCost = 100, Name="Amazone", Status="Fine"},
+                new Equipment{ UtilizationCost = 0, Name="Brak", Status="Fine"}
+
             };
 
             foreach (Equipment e in equipments)
@@ -104,7 +106,9 @@ namespace OnlyFarms.Data
             
             var machines = new Machine[]
             {
-                new Machine{ UtilizationCost = 500, Name="Case", Status="Fine", FuelUsageRate = 23.5}
+                new Machine{ UtilizationCost = 500, Name="Case", Status="Fine", FuelUsageRate = 23.5},
+                new Machine{ UtilizationCost = 0, Name="Brak", Status="Fine", FuelUsageRate = 0}
+
             };
 
             foreach (Machine m in machines)
