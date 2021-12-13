@@ -1,40 +1,28 @@
-﻿@{
-    ViewData["Title"] = "WorkerView";
+﻿@model IEnumerable<OnlyFarms.Models.Worker>
+
+@{
+    ViewData["Title"] = "Index";
 }
 
-<div class="text-center">
-    <div id="container">
-        <div class="tile1" onclick="location.href='Procedures';">
-            <div class="overlay1">
-                <i class="icon-list-alt" style=" font-size: 70px;"></i>
-                <a class="link"><p style="color:aliceblue; font-size:12px">Zabiegi</p></a>
-            </div>
-        </div>
-        <div class="tile1" onclick="location.href='Machines';">
-            <div class="overlay1">
-                <i class="icon-steering-wheel" style=" font-size: 70px;"></i>
-                <a class="link"><p style="color:aliceblue; font-size:12px">Maszyny</p></a>
-            </div>
-        </div>
-        <div class="tile1" onclick="location.href='Equipments';">
-            <div class="overlay1">
-                <i class="icon-cog-alt" style=" font-size: 70px;"></i>
-                <a class="link"><p style="color:aliceblue; font-size:12px">Sprzęt</p></a>
-            </div>
-        </div>
 
-        <div class="tile1" onclick="location.href='Cultivations';">
-            <div class="overlay1">
-                <i class="icon-pagelines" style=" font-size: 70px;"></i>
-                <a class="link"><p style="color:aliceblue; font-size:12px">Uprawy</p></a>
-            </div>
+<div class="text-center">
+    <h1>Pracownicy</h1>
+</div>
+
+@foreach (var item in Model) {
+    <div class="tile1">
+        <div class="overlay1">
+            <i class="icon-user" style=" font-size: 70px;" onclick="location.href='Workers/Details/@item.ID';"></i>
+            <a class="link">
+                <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='Workers/Delete/@item.ID';"></i>
+                <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.Surname)</p>
+                <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='Workers/Edit/@item.ID';"></i>
+            </a>
         </div>
-        <div class="tile1" onclick="location.href='Fields';">
-            <div class="overlay1">
-                <i class="icon-pagelines" style=" font-size: 70px;"></i>
-                <a class="link"><p style="color:aliceblue; font-size:12px">Pola</p></a>
-            </div>
-        </div>
-        <div style="clear: both;"></div>
+    </div>
+}
+<div class="tile1" onclick="location.href='Workers/Create';">
+    <div class="overlay1">
+        <i class="icon-plus" style=" font-size: 70px;"></i>
     </div>
 </div>
