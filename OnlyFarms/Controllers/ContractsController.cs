@@ -73,12 +73,7 @@ namespace OnlyFarms.Controllers {
 
                 double percentageOfContractCompletion = 0;
 
-                if (cultivations.Count == 0)
-                {
-                    ViewBag.percentageOfContractCompletionList = percentageOfContractCompletionList;
-                    return View();
-                }
-                else
+                if (cultivations.Count != 0)
                 {
                     int expectedYieldFromCultivations = 0;
 
