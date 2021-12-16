@@ -227,6 +227,12 @@
       "css": "location",
       "code": 59417,
       "src": "fontawesome"
+    },
+    {
+      "uid": "d4939d1f4e5f03f6e58900b2ac8f1c6c",
+      "css": "thermometer",
+      "code": 59418,
+      "src": "entypo"
     }
   ]
 }

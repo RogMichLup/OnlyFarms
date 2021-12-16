@@ -49,6 +49,14 @@ namespace OnlyFarms.Controllers
                 return NotFound();
             }
 
+            Weather weather = await _context.Weathers
+                                    .Include(s => s.Field)
+                                    .Where(s => s.Field.ID == id)
+                                    .OrderBy(s => s.Date)
+                                    .LastOrDefaultAsync();
+            
+            ViewBag.weather = weather;
+
             return View(@field);
         }
 
@@ -164,5 +172,108 @@ namespace OnlyFarms.Controllers
         {
             return _context.Fields.Any(e => e.ID == id);
         }
+
+        public async Task<IActionResult> UpdateWeather(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var @field = await _context.Fields
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            List<Cultivation> cultivations = await _context.Cultivations
+                                                    .Include(c => c.Crop)
+                                                    .Include(c => c.Field)
+                                                    .Where(c => c.FieldID == field.ID)
+                                                    .ToListAsync();
+            ViewBag.cultivations = cultivations;
+
+            if (@field == null)
+            {
+                return NotFound();
+            }
+
+            Weather weather = await _context.Weathers
+                                    .Include(s => s.Field)
+                                    .Where(s => s.Field.ID == id)
+                                    .OrderBy(s => s.Date)
+                                    .LastOrDefaultAsync();
+
+            Random rand = new Random();
+
+            Weather newWeather = new Weather();
+            newWeather.FieldID = (int)id;
+            newWeather.Date = DateTime.Now;
+
+            if (weather == null)
+            {
+                newWeather.Temperature = rand.Next(-20, 50);
+                newWeather.Moisture = rand.Next(0, 100);
+                newWeather.AirPressure = rand.Next(900, 1100);
+                newWeather.RainfallAmount = rand.Next(0, 1825);
+                int i = rand.Next(0, 3);
+                switch (i)
+                {
+                    case 0:
+                        newWeather.WindDirection = "E";
+                        break;
+
+                    case 1:
+                        newWeather.WindDirection = "W";
+                        break;
+                    case 2:
+                        newWeather.WindDirection = "N";
+                        break;
+                    case 3:
+                        newWeather.WindDirection = "S";
+                        break;
+                }
+                newWeather.WindSpeed = rand.Next(0, 200);
+            }
+            else
+            {
+                newWeather.Temperature = weather.Temperature + rand.Next(-5, 5);
+                if(weather.Moisture > 10)
+                    newWeather.Moisture = weather.Moisture + rand.Next(-10, 10);
+                else
+                    newWeather.Moisture = weather.Moisture + rand.Next(0, 10);
+                newWeather.AirPressure = weather.AirPressure + rand.Next(-10, 10);
+                if(weather.RainfallAmount > 20)
+                    newWeather.RainfallAmount = weather.RainfallAmount + rand.Next(-20, 20);
+                else
+                    newWeather.RainfallAmount = weather.RainfallAmount + rand.Next(0, 20);
+                int i = rand.Next(0, 3);
+                switch (i)
+                {
+                    case 0:
+                        newWeather.WindDirection = "E";
+                        break;
+
+                    case 1:
+                        newWeather.WindDirection = "W";
+                        break;
+                    case 2:
+                        newWeather.WindDirection = "N";
+                        break;
+                    case 3:
+                        newWeather.WindDirection = "S";
+                        break;
+                }
+                if(weather.WindSpeed > 5)
+                    newWeather.WindSpeed= weather.WindSpeed + rand.Next(-5, 5);
+                else
+                    newWeather.WindSpeed = weather.WindSpeed + rand.Next(0, 5);
+            }
+
+            _context.Add(newWeather);
+            await _context.SaveChangesAsync();
+
+            ViewBag.weather = newWeather;
+
+            return View("Details", @field);
+        }
+
     }
 }
