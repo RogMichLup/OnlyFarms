@@ -85,7 +85,7 @@ namespace OnlyFarms.Controllers {
                         percentageOfContractCompletion = ((double)expectedYieldFromCultivations / (double)item.Quantity) * 100;
                     else
                     {
-                        foreach (ContractCrop before in contractCrop)
+                        foreach (ContractCrop before in contractCropBefore)
                         {
                             expectedYieldFromCultivations -= before.Quantity;
                         }
