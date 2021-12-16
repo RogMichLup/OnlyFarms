@@ -70,8 +70,9 @@ namespace OnlyFarms.Controllers
 
             for (int i = 0; i < allProceduresDone.Count; i++)
             {
-                costBillanse -= allProceduresDone[i].Worker.HourlyPay * (double)allProceduresDone[1].DurationInHours;
-                costBillanse -= (double)allProceduresDone[i].DurationInHours * allProceduresDone[1].Machine.FuelUsageRate * fuelPrice;
+
+                costBillanse -= allProceduresDone[i].Worker.HourlyPay * (double)allProceduresDone[i].DurationInHours;
+                costBillanse -= (double)allProceduresDone[i].DurationInHours * allProceduresDone[i].Machine.FuelUsageRate * fuelPrice;
                 // if utilization cost will be per motohour
                 //costBillanse -= (double)allProceduresDone[i].DurationInHours * allProceduresDone[1].Machine.UtilizationCost;
                 //costBillanse -= (double)allProceduresDone[i].DurationInHours * allProceduresDone[1].Equipment.UtilizationCost;
