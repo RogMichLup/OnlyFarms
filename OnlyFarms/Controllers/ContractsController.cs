@@ -55,6 +55,8 @@ namespace OnlyFarms.Controllers {
             }
 
             List<double> percentageOfContractCompletionList = new List<double>();
+            List<string> names = new List<string>();
+            List<int> maxx = new List<int>();
 
             foreach (ContractCrop item in contractCrop)
             {
@@ -94,10 +96,13 @@ namespace OnlyFarms.Controllers {
                     }
                 }
                 percentageOfContractCompletionList.Add(percentageOfContractCompletion);
+                names.Add(item.Crop.CropName);
+                maxx.Add(item.Quantity);
             }
 
             ViewBag.percentageOfContractCompletionList = percentageOfContractCompletionList;
-
+            ViewBag.names = names;
+            ViewBag.maxx = maxx;
             return View(contract);
         }
 
