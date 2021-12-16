@@ -23,7 +23,9 @@ namespace OnlyFarms.Controllers
         // GET: Equipments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Equipments.ToListAsync());
+            var equipments = await _context.Equipments.ToListAsync();
+            equipments.RemoveAll(p => p.Name == "Brak" && p.ID == 1);
+            return View(equipments);
         }
 
         // GET: Equipments/Details/5

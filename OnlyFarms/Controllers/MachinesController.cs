@@ -23,7 +23,9 @@ namespace OnlyFarms.Controllers
         // GET: Machines
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Machines.ToListAsync());
+            var machines = await _context.Machines.ToListAsync();
+            machines.RemoveAll(p => p.Name == "Brak" && p.ID == 1);
+            return View(machines);
         }
 
         // GET: Machines/Details/5
