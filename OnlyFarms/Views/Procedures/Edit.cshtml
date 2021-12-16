@@ -24,7 +24,7 @@
                 <span asp-validation-for="Label" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
+                <label  class="control-label">Start Date</label>
                 @if (User.IsInRole("admin")) {
                     <input asp-for="StartDate" class="form-control" />
                 }
@@ -34,7 +34,7 @@
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DurationInHours" class="control-label"></label>
+                <label  class="control-label">Duration In Hours</label>
                 <input asp-for="DurationInHours" class="form-control" />
                 <span asp-validation-for="DurationInHours" class="text-danger"></span>
             </div>
@@ -80,31 +80,23 @@
                 <span asp-validation-for="WorkerID" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Supplies" class="control-label"></label>
                 <table>
-                    <tr>
-                        <td>Name</td>
-                        <td></td>
-                    </tr>
-                    @foreach (Supply item in ViewBag.supplies)
-                    {
+                    @foreach (Supply item in ViewBag.supplies) {
                         bool check = false;
 
-                        foreach (Supply supply in ViewBag.suppliesInProcedure)
-                        {
-                            if (item == supply)
-                            {
+                        foreach (Supply supply in ViewBag.suppliesInProcedure) {
+                            if (item == supply) {
                                 check = true;
                             }
                         }
-                        if (check)
-                        {
+                        if (check) {
                             <tr>
                                 <td>@item.Name</td>
                                 <td><input type="checkbox" name="cx+@item.ID" checked></td>
                             </tr>
                         }
-                        else
-                        {
+                        else {
                             <tr>
                                 <td>@item.Name</td>
                                 <td><input type="checkbox" name="cx+@item.ID"></td>
