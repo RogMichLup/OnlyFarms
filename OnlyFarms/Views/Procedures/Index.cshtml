@@ -6,12 +6,19 @@
 
 <div class="text-center">
     <h1>Zabiegi</h1>
+    <label for="vis-select">Show procedures:</label>
+    <select name="selector" id="vis-select" onchange="onSelected()">
+        <option value="all">All</option>
+        <option value="done">Done</option>
+        <option value="todo">To do</option>
+        <option value="inprogress">In progress</option>
+    </select>
 </div>
 
 @foreach (var item in Model) {
     @if (item.WorkerID == Int32.Parse(User.Identity.Name.Remove(0, 7)) || 0 == Int32.Parse(User.Identity.Name.Remove(0, 7))) {
         if (item.Status == "Done") {
-            <div class="tile1" style="background-color: #00a651">
+            <div class="tile1" name="done" style="background-color: #00a651">
                 <div class="overlay1">
                     <i class="icon-calendar-check-o" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
                     <a class="link">
@@ -25,7 +32,7 @@
             </div>
         }
         if (item.Status == "To do") {
-            <div class="tile1" style="background-color: #ff0000">
+            <div class="tile1" name="todo" style="background-color: #ff0000">
                 <div class="overlay1">
                     <i class="icon-calendar-empty" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
                     <a class="link">
@@ -39,7 +46,7 @@
             </div>
         }
         if (item.Status == "In progress") {
-            <div class="tile1" style="background-color: #ffd800">
+            <div class="tile1" name="inprogress" style="background-color: #ffd800">
                 <div class="overlay1">
                     <i class="icon-spin4" style=" font-size: 70px;" onclick="location.href='Procedures/Details/@item.ID';"></i>
                     <a class="link">
@@ -62,3 +69,35 @@
         </div>
     </div>
 }
+<script>
+    function onSelected() {
+        let selectedOption = document.getElementById("vis-select");
+        let tiles = document.getElementsByClassName("tile1");
+        for (let i = 0; i < tiles.length; i++) {
+            tiles[i].style.display = "none";
+        }
+        if (selectedOption.value == "all") {
+            for (let i = 0; i < tiles.length; i++) {
+                tiles[i].style.display = "inline";
+            }
+        }
+        else if (selectedOption.value == "done") {
+            let doneTiles = document.getElementsByName("done");
+            for (let i = 0; i < doneTiles.length; i++) {
+                doneTiles[i].style.display = "inline";
+            }
+        }
+        else if (selectedOption.value == "todo") {
+            let todoTiles = document.getElementsByName("todo");
+            for (let i = 0; i < todoTiles.length; i++) {
+                todoTiles[i].style.display = "inline";
+            }
+        }
+        else {
+            let inprogressTiles = document.getElementsByName("inprogress");
+            for (let i = 0; i < inprogressTiles.length; i++) {
+                inprogressTiles[i].style.display = "inline";
+            }
+        }
+    }
+</script>
