@@ -46,6 +46,8 @@ namespace OnlyFarms.Controllers
                 return NotFound();
             }
 
+            //Cost Billanse count
+
             var allProceduresDone = await _context.Procedures
                 .Include(s => s.Field)
                 .Where(s => s.FieldID == cultivation.FieldID)
@@ -85,6 +87,88 @@ namespace OnlyFarms.Controllers
             costBillanse += (cultivation.Crop.ExpectedYield * cultivation.AreaInHectar) * cultivation.Crop.SellPricePerTonne;
 
             ViewBag.costBillanse = costBillanse;
+
+            //Harvest time
+
+            DateTime harvestTime = DateTime.Today;
+
+            if(cultivation.CropStatus == "Ready for harvest")
+            {
+                Weather weatherFirst = await _context.Weathers
+                                        .Include(s => s.Field)
+                                        .Where(s => s.FieldID == cultivation.FieldID)
+                                        .Where(s => s.Date.DayOfYear == DateTime.Today.DayOfYear)
+                                        .OrderBy(s => s.Date)
+                                        .LastOrDefaultAsync();
+                if (weatherFirst != null)
+                {
+
+                switch (weatherFirst.RainfallAmount)
+                {
+                    case < 20:
+                        break;
+                    case < 50:
+                        harvestTime = harvestTime.AddDays(1);
+                        break;
+                    case > 100:
+                        harvestTime = harvestTime.AddDays(3);
+                        break;
+                }
+
+                if(harvestTime < harvestTime.AddDays(2))
+                {
+                    Weather weatherSecond = await _context.Weathers
+                                        .Include(s => s.Field)
+                                        .Where(s => s.FieldID == cultivation.FieldID)
+                                        .Where(s => s.Date.DayOfYear == DateTime.Today.DayOfYear -1)
+                                        .OrderBy(s => s.Date)
+                                        .LastOrDefaultAsync();
+                    
+                    if(weatherSecond != null)
+                    {
+                    switch (weatherSecond.RainfallAmount)
+                    {
+                        case < 20:
+                            break;
+                        case < 50:
+                            harvestTime = harvestTime.AddDays(1);
+                            break;
+                        case > 100:
+                            harvestTime = harvestTime.AddDays(2);
+                            break;
+                    }
+
+                    if (harvestTime < harvestTime.AddDays(1))
+                    {
+                        Weather weatherThird = await _context.Weathers
+                                            .Include(s => s.Field)
+                                            .Where(s => s.FieldID == cultivation.FieldID)
+                                            .Where(s => s.Date.DayOfYear == DateTime.Today.DayOfYear - 2)
+                                            .OrderBy(s => s.Date)
+                                            .LastOrDefaultAsync();
+
+                        if(weatherThird != null)
+                        {
+                        switch (weatherThird.RainfallAmount)
+                        {
+                            case < 50:
+                                break;
+                            case > 100:
+                                harvestTime = harvestTime.AddDays(1);
+                                break;
+                        }
+                        }
+
+                        
+                    }
+                    }
+                }
+
+                ViewBag.harvestTime = harvestTime;
+                }
+
+            }
+
 
             return View(cultivation);
         }

@@ -34,7 +34,18 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Field.Tag)
         </dd>
-        @if (User.IsInRole("admin")) {
+        @if (ViewBag.harvestTime != null)
+        {
+            <dt class="col-sm-2">
+                Excepted harvest time:
+            </dt>
+            <dd class="col-sm-10">
+                @ViewBag.harvestTime.ToString("dd/MM/yyyy")
+            </dd>
+        }
+
+        @if (User.IsInRole("admin"))
+        {
             <dt class="col-sm-2">
                 Excepted gain:
             </dt>
