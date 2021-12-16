@@ -94,7 +94,7 @@ namespace OnlyFarms.Controllers
         public IActionResult Create()
         {
             ViewData["CropID"] = new SelectList(_context.Crops, "ID", "CropName");
-            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City");
+            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "Tag");
             return View();
         }
 
@@ -113,7 +113,7 @@ namespace OnlyFarms.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CropID"] = new SelectList(_context.Crops, "ID", "CropName", cultivation.CropID);
-            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City", cultivation.FieldID);
+            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "Tag", cultivation.FieldID);
             return View(cultivation);
         }
 
@@ -132,7 +132,7 @@ namespace OnlyFarms.Controllers
                 return NotFound();
             }
             ViewData["CropID"] = new SelectList(_context.Crops, "ID", "CropName", cultivation.CropID);
-            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City", cultivation.FieldID);
+            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "Tag", cultivation.FieldID);
             return View(cultivation);
         }
 
@@ -170,7 +170,7 @@ namespace OnlyFarms.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CropID"] = new SelectList(_context.Crops, "ID", "CropName", cultivation.CropID);
-            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City", cultivation.FieldID);
+            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "Tag", cultivation.FieldID);
             return View(cultivation);
         }
 

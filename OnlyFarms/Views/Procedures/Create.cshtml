@@ -18,12 +18,12 @@
                 <span asp-validation-for="Label" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
+                <label  class="control-label">Start Date</label>
                 <input asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DurationInHours" class="control-label"></label>
+                <label  class="control-label">Duration In Hours</label>
                 <input asp-for="DurationInHours" class="form-control" />
                 <span asp-validation-for="DurationInHours" class="text-danger"></span>
             </div>
@@ -53,13 +53,9 @@
                 <select asp-for="WorkerID" class="form-control" asp-items="ViewBag.WorkerID"><option hidden selected>Select one...</option></select>
             </div>
             <div class="form-group">
+                <label asp-for="Supplies" class="control-label"></label>
                 <table>
-                    <tr>
-                        <td>Name</td>
-                        <td></td>
-                    </tr>
-                    @foreach (Supply item in ViewBag.supplies)
-                    {
+                    @foreach (Supply item in ViewBag.supplies) {
                         <tr>
                             <td>@item.Name</td>
                             <td><input type="checkbox" name="cx+@item.ID"></td>

@@ -15,12 +15,24 @@
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label class="control-label">Start Date</label>
+                @if (User.IsInRole("admin")) {
+                    <input asp-for="Name" class="form-control" />
+                }
+                else {
+                    <input asp-for="Name" class="form-control" readonly />
+                }
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UtilizationCost" class="control-label"></label>
-                <input asp-for="UtilizationCost" class="form-control" />
+                <label class="control-label">Utilization Cost</label>
+
+                @if (User.IsInRole("admin")) {
+                    <input asp-for="UtilizationCost" class="form-control" />
+                }
+                else {
+                    <input asp-for="UtilizationCost" class="form-control" readonly />
+                }
                 <span asp-validation-for="UtilizationCost" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,8 +45,13 @@
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FuelUsageRate" class="control-label"></label>
-                <input asp-for="FuelUsageRate" class="form-control" />
+                <label class="control-label">Fuel Usage Rate (Per Working Hour)</label>
+                @if (User.IsInRole("admin")) {
+                    <input asp-for="FuelUsageRate" class="form-control" />
+                }
+                else {
+                    <input asp-for="FuelUsageRate" class="form-control" readonly />
+                }
                 <span asp-validation-for="FuelUsageRate" class="text-danger"></span>
             </div>
             <div class="form-group">
