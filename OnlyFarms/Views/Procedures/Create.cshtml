@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="custom-select">
+                <select asp-for="Status" class="form-control">
                     <option value="To do">To do</option>
                     <option value="In progress">In progress</option>
                     <option value="Done">Done</option>
@@ -37,19 +37,19 @@
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FieldID" class="control-label"></label>
+                <label asp-for="Field" class="control-label"></label>
                 <select asp-for="FieldID" class="form-control" asp-items="ViewBag.FieldID"><option hidden selected>Select one...</option></select>
             </div>
             <div class="form-group">
-                <label asp-for="EquipmentID" class="control-label"></label>
+                <label asp-for="Equipment" class="control-label"></label>
                 <select asp-for="EquipmentID" class="form-control" asp-items="ViewBag.EquipmentID"><option hidden selected>Select one...</option></select>
             </div>
             <div class="form-group">
-                <label asp-for="MachineID" class="control-label"></label>
+                <label asp-for="Machine" class="control-label"></label>
                 <select asp-for="MachineID" class="form-control" asp-items="ViewBag.MachineID"><option hidden selected>Select one...</option></select>
             </div>
             <div class="form-group">
-                <label asp-for="WorkerID" class="control-label"></label>
+                <label asp-for="Worker" class="control-label"></label>
                 <select asp-for="WorkerID" class="form-control" asp-items="ViewBag.WorkerID"><option hidden selected>Select one...</option></select>
             </div>
             <div class="form-group">

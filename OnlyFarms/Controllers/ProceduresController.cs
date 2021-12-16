@@ -58,7 +58,7 @@ namespace OnlyFarms.Controllers
         public IActionResult Create()
         {
             ViewData["EquipmentID"] = new SelectList(_context.Equipments.Where(s => s.Status != "For repair"), "ID", "Name");
-            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City");
+            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "Tag");
             ViewData["MachineID"] = new SelectList(_context.Machines.Where(s => s.Status != "For repair"), "ID", "Name");
             ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName");
             ViewBag.supplies = supplies;
@@ -89,7 +89,7 @@ namespace OnlyFarms.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "ID", "Name", procedure.EquipmentID);
-            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City", procedure.FieldID);
+            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "Tag", procedure.FieldID);
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Name", procedure.MachineID);
             ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName", procedure.WorkerID);
             ViewBag.supplies = supplies;
@@ -120,7 +120,7 @@ namespace OnlyFarms.Controllers
                 .ToListAsync();
 
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "ID", "Name", procedure.EquipmentID);
-            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City", procedure.FieldID);
+            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "Tag", procedure.FieldID);
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Name", procedure.MachineID);
             ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName", procedure.WorkerID);
             ViewBag.suppliesInProcedure = suppliesInProcedure;
@@ -192,7 +192,7 @@ namespace OnlyFarms.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "ID", "Name", procedure.EquipmentID);
-            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "City", procedure.FieldID);
+            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "Tag", procedure.FieldID);
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Name", procedure.MachineID);
             ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName", procedure.WorkerID);
             return View(procedure);

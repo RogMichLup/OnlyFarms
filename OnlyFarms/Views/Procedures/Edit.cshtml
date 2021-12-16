@@ -40,7 +40,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="custom-select">
+                <select asp-for="Status" class="form-control">
                     <option value="To do">To do</option>
                     <option value="In progress">In progress</option>
                     <option value="Done">Done</option>
@@ -48,7 +48,7 @@
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FieldID" class="control-label"></label>
+                <label asp-for="Field" class="control-label"></label>
                 @if (User.IsInRole("admin")) {
                     <select asp-for="FieldID" class="form-control" asp-items="ViewBag.FieldID"></select>
                 }
@@ -59,17 +59,17 @@
                 <span asp-validation-for="FieldID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EquipmentID" class="control-label"></label>
+                <label asp-for="Equipment" class="control-label"></label>
                 <select asp-for="EquipmentID" class="form-control" asp-items="ViewBag.EquipmentID"></select>
                 <span asp-validation-for="EquipmentID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MachineID" class="control-label"></label>
+                <label asp-for="Machine" class="control-label"></label>
                 <select asp-for="MachineID" class="form-control" asp-items="ViewBag.MachineID"></select>
                 <span asp-validation-for="MachineID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="WorkerID" class="control-label"></label>
+                <label asp-for="Worker" class="control-label"></label>
                 @if (User.IsInRole("admin")) {
                     <select asp-for="WorkerID" class="form-control" asp-items="ViewBag.WorkerID"></select>
                 }
