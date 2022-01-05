@@ -1,0 +1,28 @@
+﻿@model IEnumerable<OnlyFarms.Models.CropSale>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="text-center">
+    <h1>Sprzedarze plonów</h1>
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="tile1">
+        <div class="overlay1">
+            <i class="icon-money" style=" font-size: 70px;" onclick="location.href='CropSales/Details/@item.ID';"></i>
+            <a class="link">
+                <i class="icon-trash" style="position:absolute; left:5px; top:0; color:aliceblue;" onclick="location.href='CropSales/Delete/@item.ID';"></i>
+                <p style="color:aliceblue;">@Html.DisplayFor(modelItem => item.SaleDate) <br/> @Html.DisplayFor(modelItem => item.Crop.CropName)</p>
+                <i class="icon-pencil" style="position:absolute; right:5px; top:0; color:aliceblue;" onclick="location.href='CropSales/Edit/@item.ID';"></i>
+            </a>
+        </div>
+    </div>
+}
+<div class="tile1" onclick="location.href='CropSales/Create';">
+    <div class="overlay1">
+        <i class="icon-plus" style=" font-size: 70px;"></i>
+    </div>
+</div>

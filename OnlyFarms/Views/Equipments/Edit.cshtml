@@ -1,0 +1,58 @@
+﻿@model OnlyFarms.Models.Equipment
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Equipment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                @if (User.IsInRole("admin")) {
+                    <input asp-for="Name" class="form-control" />
+                }
+                else {
+                    <input asp-for="Name" class="form-control" readonly />
+                }
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Utilization Cost</label>
+                @if (User.IsInRole("admin")) {
+                    <input asp-for="UtilizationCost" class="form-control" />
+                }
+                else {
+                    <input asp-for="UtilizationCost" class="form-control" readonly />
+                }
+                <span asp-validation-for="UtilizationCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="custom-select">
+                    <option value="Fine">Fine</option>
+                    <option value="For repair">For repair</option>
+                    <option value="For clean up">For clean up</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

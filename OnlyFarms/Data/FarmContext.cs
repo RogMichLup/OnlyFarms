@@ -25,8 +25,7 @@ namespace OnlyFarms.Data
         public DbSet<Worker> Workers { get; set; }
         public DbSet<ContractCrop> ContractCrops { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBulider)
-        {
+        protected override void OnModelCreating(ModelBuilder modelBulider) {
             modelBulider.Entity<Contract>().ToTable("Contract");
             modelBulider.Entity<Crop>().ToTable("Crop");
             modelBulider.Entity<CropSale>().ToTable("CropSale");

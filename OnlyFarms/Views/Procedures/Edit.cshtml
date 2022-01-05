@@ -1,0 +1,121 @@
+﻿@model OnlyFarms.Models.Procedure
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Procedure</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Label" class="control-label"></label>
+                @if (User.IsInRole("admin")) {
+                    <input asp-for="Label" class="form-control" />
+                }
+                else {
+                    <input asp-for="Label" class="form-control" readonly />
+                }
+                <span asp-validation-for="Label" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Start Date</label>
+                @if (User.IsInRole("admin")) {
+                    <input asp-for="StartDate" class="form-control" />
+                }
+                else {
+                    <input asp-for="StartDate" class="form-control" readonly />
+                }
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Duration In Hours</label>
+                <input asp-for="DurationInHours" class="form-control" />
+                <span asp-validation-for="DurationInHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control">
+                    <option value="To do">To do</option>
+                    <option value="In progress">In progress</option>
+                    <option value="Done">Done</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Field" class="control-label"></label>
+                @if (User.IsInRole("admin")) {
+                    <select asp-for="FieldID" class="form-control" asp-items="ViewBag.FieldID"></select>
+                }
+                else {
+                    <select asp-for="FieldID" class="form-control" asp-items="ViewBag.FieldID" disabled></select>
+                    <input asp-for="FieldID" class="form-control"  hidden/>
+                }
+                <span asp-validation-for="FieldID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equipment" class="control-label"></label>
+                <select asp-for="EquipmentID" class="form-control" asp-items="ViewBag.EquipmentID"></select>
+                <span asp-validation-for="EquipmentID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Machine" class="control-label"></label>
+                <select asp-for="MachineID" class="form-control" asp-items="ViewBag.MachineID"></select>
+                <span asp-validation-for="MachineID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker" class="control-label"></label>
+                @if (User.IsInRole("admin")) {
+                    <select asp-for="WorkerID" class="form-control" asp-items="ViewBag.WorkerID"></select>
+                }
+                else {
+                    <select asp-for="WorkerID" class="form-control" asp-items="ViewBag.WorkerID" disabled></select>
+                    <input asp-for="WorkerID" class="form-control" hidden/>
+                }
+                <span asp-validation-for="WorkerID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Supplies" class="control-label"></label>
+                <table>
+                    @foreach (Supply item in ViewBag.supplies) {
+                        bool check = false;
+
+                        foreach (Supply supply in ViewBag.suppliesInProcedure) {
+                            if (item == supply) {
+                                check = true;
+                            }
+                        }
+                        if (check) {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td><input type="checkbox" name="cx+@item.ID" checked></td>
+                            </tr>
+                        }
+                        else {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td><input type="checkbox" name="cx+@item.ID"></td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
