@@ -8,16 +8,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlyFarms.Data;
 using OnlyFarms.Models;
+using OnlyFarms.Services;
 
 namespace OnlyFarms.Controllers
 {
     public class FieldsController : Controller
     {
         private readonly FarmContext _context;
+        private readonly IWeatherService _weatherService;
 
-        public FieldsController(FarmContext context)
+        public FieldsController(FarmContext context, IWeatherService weatherService)
         {
             _context = context;
+            _weatherService = weatherService;
         }
 
         // GET: Fields
@@ -266,6 +269,16 @@ namespace OnlyFarms.Controllers
                 else
                     newWeather.WindSpeed = weather.WindSpeed + rand.Next(0, 5);
             }
+
+            var harvestObserver = new HarvestObserver();
+            var fertilizationObserver = new FertilizationObserver();
+
+            _weatherService.Attach(harvestObserver);
+            _weatherService.Attach(fertilizationObserver);
+
+            Console.WriteLine("Updating Weather Status...");
+
+            _weatherService.UpdateWeather(newWeather);
 
             _context.Add(newWeather);
             await _context.SaveChangesAsync();
