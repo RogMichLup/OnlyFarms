@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using OnlyFarms.Services;
 
 namespace OnlyFarms {
     public class Startup {
@@ -28,6 +29,8 @@ namespace OnlyFarms {
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddControllersWithViews();
+
+            services.AddScoped<IWeatherService, WeatherService>();
 
             services.AddAuthentication("CookieAuthentication")
             .AddCookie("CookieAuthentication", config => {
