@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlyFarms.Memento;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -35,5 +36,24 @@ namespace OnlyFarms.Models
 
         public Worker Worker { get; set; }
         public ICollection<Supply> Supplies { get; set; }
+
+        public Snapshot CreateSnapshot()
+        {
+            return new Snapshot(this,
+                ID,
+                Label,
+                StartDate,
+                DurationInHours,
+                Status,
+                FieldID,
+                EquipmentID,
+                MachineID,
+                WorkerID,
+                Field,
+                Equipment,
+                Machine,
+                Worker,
+                Supplies);
+        }
     }
 }
