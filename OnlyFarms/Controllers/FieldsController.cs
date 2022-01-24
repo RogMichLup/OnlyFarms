@@ -46,8 +46,6 @@ namespace OnlyFarms.Controllers {
             if (stationConnections.DoesConnectionExist(id)) {
                 weatherStation = stationConnections.GetConnection(id).Clone();
                 weather = TransformWeather(weatherStation.GetWeather());
-                //weather.Field = field;
-                //weather.FieldID = field.ID;
             }
             else {
                 weatherStation = new Weather(field.ID);
