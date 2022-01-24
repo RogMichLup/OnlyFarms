@@ -39,12 +39,12 @@ namespace OnlyFarms.Models
             this.state = state;
         }
 
-        public bool IsAvailableForWork()
+        public string IsAvailableForWork()
         {
             return state.IsAvailableForWork(this);
         }
 
-        public int FuelConsumption()
+        public string FuelConsumption()
         {
             return state.FuelConsumption(this);
         }

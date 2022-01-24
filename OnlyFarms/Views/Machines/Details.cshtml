@@ -10,30 +10,38 @@
     <h4>Machine</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Name
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Utilization Cost
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.UtilizationCost)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Status
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Status)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Fuel Usage Rate (Per Working Hour)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FuelUsageRate)
         </dd>
+        <a class="link" style="color:lightgoldenrodyellow;">
+            <i class="icon-spin4" style="font-size: 45px;" onclick="location.href = '/Machines/GetMachineInfo/@Model.ID';"></i> 
+            <h1>
+                @ViewBag.machineState
+                @ViewBag.machineCurrentFuelUsage
+                @ViewBag.machineAvailability
+            </h1>
+        </a>
     </dl>
 </div>
 <div>

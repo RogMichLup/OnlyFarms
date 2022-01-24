@@ -156,5 +156,36 @@ namespace OnlyFarms.Controllers
         {
             return _context.Machines.Any(e => e.ID == id);
         }
+
+        public async Task<IActionResult> GetMachineInfo(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var @machine = await _context.Machines
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (@machine == null)
+            {
+                return NotFound();
+            }
+
+            string machineState;
+            string machineCurrentFuelUsage;
+            string machineAvailability;
+
+            machineState = machine.WhyUnavailable();
+            machineCurrentFuelUsage = machine.FuelConsumption();
+            machineAvailability = machine.IsAvailableForWork();
+
+
+            ViewBag.machineState = machineState;
+            ViewBag.machineCurrentFuelUsage = machineCurrentFuelUsage;
+            ViewBag.machineAvailability = machineAvailability;
+
+            return View("Details", @machine);
+        }
     }
 }

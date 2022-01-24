@@ -8,40 +8,38 @@ namespace OnlyFarms.State
 {
     public interface IState
     {
-        //protected Machine machine { get; set; }
-        
-        public bool IsAvailableForWork(Machine machine);
-        public int FuelConsumption(Machine machine);
+        public string IsAvailableForWork(Machine machine);
+        public string FuelConsumption(Machine machine);
         public string WhyUnavailable(Machine machine);
     }
     class AvailableState : IState
     {
         // TODO change return values to differ from NotAvailable
-        public bool IsAvailableForWork(Machine machine)
+        public string IsAvailableForWork(Machine machine)
         {
-            if (string.Equals(machine.Status, "For Repair") || string.Equals(machine.Status, "For Cleanup"))
+            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For cleanup"))
             {
                 machine.ChangeState(new NotAvailableState());
                 return new NotAvailableState().IsAvailableForWork(machine);
             }
             else
-                return true;
+                return "Machine is available for work";
         }
 
-        public int FuelConsumption(Machine machine)
+        public string FuelConsumption(Machine machine)
         {
-            if (string.Equals(machine.Status, "For Repair") || string.Equals(machine.Status, "For Cleanup"))
+            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For cleanup"))
             {
                 machine.ChangeState(new NotAvailableState());
-                return 0;
+                return new NotAvailableState().FuelConsumption(machine);
             }
             else
-                return (int)machine.FuelUsageRate;
+                return "Machine is current fuel consumption is: " + machine.FuelUsageRate.ToString();
         }
 
         public string WhyUnavailable(Machine machine)
         {
-            if (string.Equals(machine.Status, "For Repair") || string.Equals(machine.Status, "For Cleanup"))
+            if (machine.Status == "For repair" || string.Equals(machine.Status, "For cleanup"))
             {
                 machine.ChangeState(new NotAvailableState());
                 return new NotAvailableState().WhyUnavailable(machine);
@@ -55,11 +53,11 @@ namespace OnlyFarms.State
     class NotAvailableState : IState
     {
         // TODO change return values to differ from Available
-        public bool IsAvailableForWork(Machine machine)
+        public string IsAvailableForWork(Machine machine)
         {
-            if (string.Equals(machine.Status, "For Repair") || string.Equals(machine.Status, "For Cleanup"))
+            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For cleanup"))
             {
-                return false;
+                return "Machine is not available for work";
             }
             else
             {
@@ -68,26 +66,26 @@ namespace OnlyFarms.State
             }
         }
 
-        public int FuelConsumption(Machine machine)
+        public string FuelConsumption(Machine machine)
         {
-            if (string.Equals(machine.Status, "For Repair") || string.Equals(machine.Status, "For Cleanup"))
+            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For cleanup"))
             {
-                return 0;
+                return "Machine is not consuming any fuel at the moment";
             }
             else
             {
                 machine.ChangeState(new AvailableState());
-                return (int)machine.FuelUsageRate;
+                return new AvailableState().FuelConsumption(machine);
             }
         }
 
         public string WhyUnavailable(Machine machine)
         {
-            if (string.Equals(machine.Status, "For Repair"))
+            if (string.Equals(machine.Status, "For repair"))
             {
                 return "Machine is not available because of repair";
             }
-            else if (string.Equals(machine.Status, "For Cleanup"))
+            else if (string.Equals(machine.Status, "For cleanup"))
             {
                 return "Machine is not available because of cleanup";
             }
