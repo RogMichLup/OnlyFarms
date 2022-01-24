@@ -59,42 +59,78 @@
                             <i class="icon-thermometer" style="font-size: 30px;"></i>
                         </dt>
                         <dd class="col-sm-10" style="text-align:left">
-                            @ViewBag.weather.Temperature °C
+
+                            @if (ViewBag.weather.Temperature != 2000000) {
+                                @ViewBag.weather.Temperature @:°C
+                            }
+                            else {
+                                <a class="icon-plus" style="font-size: 15px;" onclick="location.href = '/Fields/PressTemperature/@Model.ID';">Add thermometer</a>
+                            }
                         </dd>
                         <dt class="col-sm-2">
                             <i class="icon-water" style="font-size: 30px;"></i>
                         </dt>
                         <dd class="col-sm-10" style="text-align:left">
-                            @ViewBag.weather.Moisture %
+
+                            @if (ViewBag.weather.Moisture != 2000000) {
+                                @ViewBag.weather.Moisture @:%
+                            }
+                            else {
+                                <a class="icon-plus" style="font-size: 15px;" onclick="location.href = '/Fields/PressMoisture/@Model.ID';">Add moisturemeter</a>
+                            }
                         </dd>
                         <dt class="col-sm-2">
                             <i class="icon-gauge" style="font-size: 30px;"></i>
                         </dt>
                         <dd class="col-sm-10" style="text-align:left">
-                            @ViewBag.weather.AirPressure hPa
+
+                            @if (ViewBag.weather.AirPressure != 2000000) {
+                                @ViewBag.weather.AirPressure @:hPa
+                                        }
+                            else {
+                                <a class="icon-plus" style="font-size: 15px;" onclick="location.href = '/Fields/PressAirPressure/@Model.ID';">Add barometer</a>
+                            }
                         </dd>
                         <dt class="col-sm-2">
                             <i class="icon-drizzle" style="font-size: 30px;"></i>
                         </dt>
                         <dd class="col-sm-10" style="text-align:left">
-                            @ViewBag.weather.RainfallAmount mm
+
+                            @if (ViewBag.weather.RainfallAmount != 2000000) {
+                                @ViewBag.weather.RainfallAmount @:mm
+                                        }
+                            else {
+                                <a class="icon-plus" style="font-size: 15px;" onclick="location.href = '/Fields/PressRain/@Model.ID';">Add rain gauge</a>
+                            }
                         </dd>
                         <dt class="col-sm-2">
                             <i class="icon-direction" style="font-size: 30px;"></i>
                         </dt>
                         <dd class="col-sm-10" style="text-align:left">
-                            @ViewBag.weather.WindDirection
+
+                            @if (ViewBag.weather.WindDirection != "unknown") {
+                                @ViewBag.weather.WindDirection
+                            }
+                            else {
+                                <a class="icon-plus" style="font-size: 15px;" onclick="location.href = '/Fields/PressDirection/@Model.ID';">Add direction anemometer</a>
+                            }
                         </dd>
                         <dt class="col-sm-2">
                             <i class="icon-cloud-wind" style="font-size: 30px;"></i>
                         </dt>
                         <dd class="col-sm-10" style="text-align:left">
-                            @ViewBag.weather.WindSpeed km/h
+                            @if (ViewBag.weather.WindSpeed != 2000000) {
+                                @ViewBag.weather.WindSpeed @:km/ h
+                            }
+                            else {
+                                <a class="icon-plus" style="font-size: 15px;" onclick="location.href = '/Fields/PressSpeed/@Model.ID';">Add speed anemometer</a>
+                            }
+                        </dd>
+                        <dd class="col-sm-10" style="text-align:left">
+                            <i class="icon-plus" style="font-size: 30px;" onclick="location.href = '/Fields/UpdateWeather/@Model.ID';">Add all missing</i>  
+                            <i class="icon-spin4" style="font-size: 30px; float:right" onclick="location.href = '/Fields/UpdateWeather/@Model.ID';">Refresh</i>  
                         </dd>
                     </dl>
-                    <a class="link" style="color:lightgoldenrodyellow;">
-                        <i class="icon-spin4" style="font-size: 45px;" onclick="location.href = '/Fields/UpdateWeather/@Model.ID';"></i>  <h1>Odśwież</h1>
-                    </a>
                 </div>
             </div>
         </div>

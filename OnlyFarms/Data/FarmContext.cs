@@ -21,7 +21,7 @@ namespace OnlyFarms.Data
         public DbSet<Machine> Machines { get; set; }
         public DbSet<Procedure> Procedures { get; set; }
         public DbSet<Supply> Supplies { get; set; }
-        public DbSet<Weather> Weathers { get; set; }
+        public DbSet<WeatherUnit> Weathers { get; set; }
         public DbSet<Worker> Workers { get; set; }
         public DbSet<ContractCrop> ContractCrops { get; set; }
 
@@ -35,7 +35,7 @@ namespace OnlyFarms.Data
             modelBulider.Entity<Machine>().ToTable("Machine");
             modelBulider.Entity<Procedure>().ToTable("Procedure");
             modelBulider.Entity<Supply>().ToTable("Supply");
-            modelBulider.Entity<Weather>().ToTable("Weather");
+            modelBulider.Entity<WeatherUnit>().ToTable("Weather");
             modelBulider.Entity<Worker>().ToTable("Worker");
             modelBulider.Entity<ContractCrop>().ToTable("ContractCrop");
         }

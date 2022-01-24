@@ -7,7 +7,7 @@ namespace OnlyFarms.Services
     {
         public List<IWeatherObserver> Observers = new List<IWeatherObserver>();
 
-        public void UpdateWeather(Weather weather)
+        public void UpdateWeather(WeatherUnit weather)
         {
             Notify(weather);
         }
@@ -22,7 +22,7 @@ namespace OnlyFarms.Services
             Observers.Remove(observer);
         }
 
-        public void Notify(Weather weather)
+        public void Notify(WeatherUnit weather)
         {
             foreach (var observer in Observers)
             {

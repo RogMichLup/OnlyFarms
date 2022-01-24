@@ -8,37 +8,53 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlyFarms.Data;
 using OnlyFarms.Models;
+using OnlyFarms.Models.Decorators;
 using OnlyFarms.Services;
 
-namespace OnlyFarms.Controllers
-{
-    public class FieldsController : Controller
-    {
+namespace OnlyFarms.Controllers {
+    public class FieldsController : Controller {
         private readonly FarmContext _context;
         private readonly IWeatherService _weatherService;
 
-        public FieldsController(FarmContext context, IWeatherService weatherService)
-        {
+        public FieldsController(FarmContext context, IWeatherService weatherService) {
             _context = context;
             _weatherService = weatherService;
         }
 
         // GET: Fields
-        public async Task<IActionResult> Index()
-        {
+        public async Task<IActionResult> Index() {
             return View(await _context.Fields.ToListAsync());
         }
 
         // GET: Fields/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Details(int? id) {
+
+
+            if (id == null) {
                 return NotFound();
             }
 
             var @field = await _context.Fields
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (@field == null) {
+                return NotFound();
+            }
+
+            WeatherUnit weather = new WeatherUnit();
+            StationPrototype weatherStation = Global.weatherStations.Find(p => p.GetFieldID() == field.ID);
+            if (weatherStation != null) {
+                weather = TransformWeather(weatherStation.GetWeather());
+                weather.Field = field;
+                weather.FieldID = field.ID;
+            }
+            else {
+                weatherStation = new Weather(field.ID);
+                Global.weatherStations.Add(weatherStation);
+                weather = TransformWeather(weatherStation.GetWeather());
+                weather.Field = field;
+                weather.FieldID = field.ID;
+            }
 
             List<Cultivation> cultivations = await _context.Cultivations
                                                     .Include(c => c.Crop)
@@ -46,18 +62,6 @@ namespace OnlyFarms.Controllers
                                                     .Where(c => c.FieldID == field.ID)
                                                     .ToListAsync();
             ViewBag.cultivations = cultivations;
-
-            if (@field == null)
-            {
-                return NotFound();
-            }
-
-            Weather weather = await _context.Weathers
-                                    .Include(s => s.Field)
-                                    .Where(s => s.Field.ID == id)
-                                    .OrderBy(s => s.Date)
-                                    .LastOrDefaultAsync();
-            
             ViewBag.weather = weather;
 
             return View(@field);
@@ -65,8 +69,7 @@ namespace OnlyFarms.Controllers
 
         // GET: Fields/Create
         [Authorize(Roles = "admin")]
-        public IActionResult Create()
-        {
+        public IActionResult Create() {
             return View();
         }
 
@@ -76,10 +79,8 @@ namespace OnlyFarms.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Create([Bind("ID,Tag,City,Street,FieldSurface")] Field @field)
-        {
-            if (ModelState.IsValid)
-            {
+        public async Task<IActionResult> Create([Bind("ID,Tag,City,Street,FieldSurface")] Field @field) {
+            if (ModelState.IsValid) {
                 _context.Add(@field);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -89,16 +90,13 @@ namespace OnlyFarms.Controllers
 
         // GET: Fields/Edit/5
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Edit(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
             var @field = await _context.Fields.FindAsync(id);
-            if (@field == null)
-            {
+            if (@field == null) {
                 return NotFound();
             }
             return View(@field);
@@ -110,28 +108,21 @@ namespace OnlyFarms.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Tag,City,Street,FieldSurface")] Field @field)
-        {
-            if (id != @field.ID)
-            {
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Tag,City,Street,FieldSurface")] Field @field) {
+            if (id != @field.ID) {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
+            if (ModelState.IsValid) {
+                try {
                     _context.Update(@field);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FieldExists(@field.ID))
-                    {
+                catch (DbUpdateConcurrencyException) {
+                    if (!FieldExists(@field.ID)) {
                         return NotFound();
                     }
-                    else
-                    {
+                    else {
                         throw;
                     }
                 }
@@ -142,17 +133,14 @@ namespace OnlyFarms.Controllers
 
         // GET: Fields/Delete/5
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Delete(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
             var @field = await _context.Fields
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (@field == null)
-            {
+            if (@field == null) {
                 return NotFound();
             }
 
@@ -163,111 +151,38 @@ namespace OnlyFarms.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        public async Task<IActionResult> DeleteConfirmed(int id) {
             var @field = await _context.Fields.FindAsync(id);
             _context.Fields.Remove(@field);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FieldExists(int id)
-        {
+        private bool FieldExists(int id) {
             return _context.Fields.Any(e => e.ID == id);
         }
-
-        public async Task<IActionResult> UpdateWeather(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> UpdateWeather(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
             var @field = await _context.Fields
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            List<Cultivation> cultivations = await _context.Cultivations
-                                                    .Include(c => c.Crop)
-                                                    .Include(c => c.Field)
-                                                    .Where(c => c.FieldID == field.ID)
-                                                    .ToListAsync();
-            ViewBag.cultivations = cultivations;
-
-            if (@field == null)
-            {
+            if (@field == null) {
                 return NotFound();
             }
 
-            Weather weather = await _context.Weathers
-                                    .Include(s => s.Field)
-                                    .Where(s => s.Field.ID == id)
-                                    .OrderBy(s => s.Date)
-                                    .LastOrDefaultAsync();
-
-            Random rand = new Random();
-
-            Weather newWeather = new Weather();
-            newWeather.FieldID = (int)id;
-            newWeather.Date = DateTime.Now;
-
-            if (weather == null)
-            {
-                newWeather.Temperature = rand.Next(-20, 50);
-                newWeather.Moisture = rand.Next(0, 100);
-                newWeather.AirPressure = rand.Next(900, 1100);
-                newWeather.RainfallAmount = rand.Next(0, 1825);
-                int i = rand.Next(0, 3);
-                switch (i)
-                {
-                    case 0:
-                        newWeather.WindDirection = "E";
-                        break;
-
-                    case 1:
-                        newWeather.WindDirection = "W";
-                        break;
-                    case 2:
-                        newWeather.WindDirection = "N";
-                        break;
-                    case 3:
-                        newWeather.WindDirection = "S";
-                        break;
-                }
-                newWeather.WindSpeed = rand.Next(0, 200);
+            WeatherUnit weather = new WeatherUnit();
+            StationPrototype weatherStation = Global.weatherStations.Find(p => p.GetFieldID() == field.ID);
+            if (weatherStation != null) {
+                weatherStation = weatherStation.Clone();
+                weatherStation.UpdateWeather();
+                weather = TransformWeather(weatherStation.GetWeather());
             }
-            else
-            {
-                newWeather.Temperature = weather.Temperature + rand.Next(-5, 5);
-                if(weather.Moisture > 10)
-                    newWeather.Moisture = weather.Moisture + rand.Next(-10, 10);
-                else
-                    newWeather.Moisture = weather.Moisture + rand.Next(0, 10);
-                newWeather.AirPressure = weather.AirPressure + rand.Next(-10, 10);
-                if(weather.RainfallAmount > 20)
-                    newWeather.RainfallAmount = weather.RainfallAmount + rand.Next(-20, 20);
-                else
-                    newWeather.RainfallAmount = weather.RainfallAmount + rand.Next(0, 20);
-                int i = rand.Next(0, 3);
-                switch (i)
-                {
-                    case 0:
-                        newWeather.WindDirection = "E";
-                        break;
-
-                    case 1:
-                        newWeather.WindDirection = "W";
-                        break;
-                    case 2:
-                        newWeather.WindDirection = "N";
-                        break;
-                    case 3:
-                        newWeather.WindDirection = "S";
-                        break;
-                }
-                if(weather.WindSpeed > 5)
-                    newWeather.WindSpeed= weather.WindSpeed + rand.Next(-5, 5);
-                else
-                    newWeather.WindSpeed = weather.WindSpeed + rand.Next(0, 5);
+            else {
+                weatherStation = new Weather(field.ID);
+                Global.weatherStations.Add(weatherStation);
             }
 
             var harvestObserver = new HarvestObserver();
@@ -278,15 +193,166 @@ namespace OnlyFarms.Controllers
 
             Console.WriteLine("Updating Weather Status...");
 
-            _weatherService.UpdateWeather(newWeather);
+            _weatherService.UpdateWeather(weather);
+            Global.weatherStations[Global.weatherStations.FindIndex(p => p.GetFieldID() == field.ID)] = weatherStation; //updating the values in server storage
 
-            _context.Add(newWeather);
-            await _context.SaveChangesAsync();
 
-            ViewBag.weather = newWeather;
+            List<Cultivation> cultivations = await _context.Cultivations
+                                                    .Include(c => c.Crop)
+                                                    .Include(c => c.Field)
+                                                    .Where(c => c.FieldID == field.ID)
+                                                    .ToListAsync();
+            ViewBag.cultivations = cultivations;
+            ViewBag.weather = weather;
 
             return View("Details", @field);
         }
+        private WeatherUnit TransformWeather(string weatherString) {
+            WeatherUnit weather = InitializeWeatherUnit();
+            List<string> partials = weatherString.Split(" ").ToList();
+            partials.RemoveAll(p => p.Length < 1);
+            foreach (string singlePartial in partials) {
+                List<string> nameMeasurement = singlePartial.Split(";").ToList();
+                if (nameMeasurement.Last() == "unmeasured") continue; //skip not measured units
+                switch (nameMeasurement.First()) {
+                    case "barometer":
+                        weather.AirPressure = Int32.Parse(nameMeasurement.Last());
+                        break;
+                    case "directionAnemometer":
+                        weather.WindDirection = nameMeasurement.Last();
+                        break;
+                    case "moistureMeter":
+                        weather.Moisture = Int32.Parse(nameMeasurement.Last());
+                        break;
+                    case "rainGauge":
+                        weather.RainfallAmount = Int32.Parse(nameMeasurement.Last());
+                        break;
+                    case "speedAnemometer":
+                        weather.WindSpeed = Int32.Parse(nameMeasurement.Last());
+                        break;
+                    case "thermometer":
+                        weather.Temperature = Double.Parse(nameMeasurement.Last());
+                        break;
+                    case "timestamp":
+                        weather.Date = DateTime.Parse(nameMeasurement[1] + " " + nameMeasurement.Last());
+                        break;
+                    default:
+                        Console.WriteLine("Error while transforming weather");
+                        break;
+                }
+            }
+            return weather;
+        }
+        private WeatherUnit InitializeWeatherUnit() {
+            WeatherUnit weather = new WeatherUnit();
 
+            weather.AirPressure = 2000000;
+            weather.RainfallAmount = 2000000;
+            weather.Moisture = 2000000;
+            weather.Temperature = 2000000;
+            weather.WindDirection = "unknown";
+            weather.WindSpeed = 2000000;
+
+            return weather;
+        }
+        public async Task<IActionResult> PressSpeed(int? id) { //buttons for addint tools to station
+            var @field = await _context.Fields
+                .FirstOrDefaultAsync(m => m.ID == id);
+            await ButtonPress(id, "addSpeedAnemometer");
+            return View("Details", @field);
+        }
+        public async Task<IActionResult> PressDirection(int? id) {
+            var @field = await _context.Fields
+                .FirstOrDefaultAsync(m => m.ID == id);
+            await ButtonPress(id, "addDirectionAnemometer");
+            return View("Details", @field);
+        }
+        public async Task<IActionResult> PressTemperature(int? id) {
+            var @field = await _context.Fields
+                .FirstOrDefaultAsync(m => m.ID == id);
+            await ButtonPress(id, "addThermometer");
+            return View("Details", @field);
+        }
+        public async Task<IActionResult> PressAirPressure(int? id) {
+            var @field = await _context.Fields
+                .FirstOrDefaultAsync(m => m.ID == id);
+            await ButtonPress(id, "addBarometer");
+            return View("Details", @field);
+        }
+        public async Task<IActionResult> PressMoisture(int? id) {
+            var @field = await _context.Fields
+                .FirstOrDefaultAsync(m => m.ID == id);
+            await ButtonPress(id, "addMoistureMeter");
+            return View("Details", @field);
+        }
+        public async Task<IActionResult> PressRain(int? id) {
+            var @field = await _context.Fields
+                .FirstOrDefaultAsync(m => m.ID == id);
+            await ButtonPress(id, "addRainGauge");
+            return View("Details", @field);
+        }
+        public async Task<IActionResult> ButtonPress(int? id, string command) {
+
+
+            if (id == null) {
+                return NotFound();
+            }
+
+            var @field = await _context.Fields
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (@field == null) {
+                return NotFound();
+            }
+
+            WeatherUnit weather = new WeatherUnit();
+            StationPrototype weatherStation = Global.weatherStations.Find(p => p.GetFieldID() == field.ID);
+            if (weatherStation != null) {
+                weatherStation = weatherStation.Clone(); //clone static connection to it's own object so multiple users can access
+                weatherStation = AddToolToStation(weatherStation, command);
+                weatherStation.UpdateWeather();
+                weather = TransformWeather(weatherStation.GetWeather());
+                weather.Field = field;
+                weather.FieldID = field.ID;
+            }
+            else {
+                return NotFound();
+            }
+            Global.weatherStations[Global.weatherStations.FindIndex(p => p.GetFieldID() == field.ID)] = weatherStation; //updating the values in server storage
+
+            List<Cultivation> cultivations = await _context.Cultivations
+                                                    .Include(c => c.Crop)
+                                                    .Include(c => c.Field)
+                                                    .Where(c => c.FieldID == field.ID)
+                                                    .ToListAsync();
+            ViewBag.cultivations = cultivations;
+            ViewBag.weather = weather;
+
+            return View(@field);
+        }
+        private StationPrototype AddToolToStation(StationPrototype station, string command) {
+            StationPrototype finishedStation = new Weather(0); //initializing finished station to default state
+            switch (command) { //decorate the station with correct decorator
+                case "addRainGauge":
+                    finishedStation = new RainGauge(station);
+                    break;
+                case "addMoistureMeter":
+                    finishedStation = new MoistureMeter(station);
+                    break;
+                case "addBarometer":
+                    finishedStation = new Barometer(station);
+                    break;
+                case "addThermometer":
+                    finishedStation = new Thermometer(station);
+                    break;
+                case "addDirectionAnemometer":
+                    finishedStation = new DirectionAnemometer(station);
+                    break;
+                case "addSpeedAnemometer":
+                    finishedStation = new SpeedAnemometer(station);
+                    break;
+            }
+            return finishedStation;
+        }
     }
 }

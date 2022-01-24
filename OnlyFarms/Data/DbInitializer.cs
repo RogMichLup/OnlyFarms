@@ -168,14 +168,14 @@ namespace OnlyFarms.Data
 
             context.SaveChanges();
             
-            var weathers = new Weather[]
+            var weathers = new WeatherUnit[]
             {
-                new Weather{ Temperature = 19.5, Moisture = 50, AirPressure = 1005, 
+                new WeatherUnit{ Temperature = 19.5, Moisture = 50, AirPressure = 1005, 
                 RainfallAmount = 2, Field = fields[0], WindDirection = "N", WindSpeed = 40, 
                 Date =  DateTime.Parse("2021-10-02")}
             };
 
-            foreach (Weather w in weathers)
+            foreach (WeatherUnit w in weathers)
             {
                 context.Weathers.Add(w);
             }

@@ -1,42 +1,42 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace OnlyFarms.Models
-{
-    public class Weather
-    {
-        [Key]
-        public int ID { get; set; }
+namespace OnlyFarms.Models {
+    public class Weather : StationPrototype {
+        public int fieldID;
+        private DateTime date;
+        private DateTime time;
+        public Weather(int fieldIndex) {
+            fieldID = fieldIndex;
+        }
+        public Weather(Weather weatherToClone) {
+            this.fieldID = weatherToClone.fieldID;
+            this.date = weatherToClone.date;
+            this.time = weatherToClone.time;
+        }
+        public string GetWeather() {
+            UpdateWeather();
+            string timeString = time.ToString();
+            timeString = timeString.Split(" ").Last();
+            string dateString = date.ToString();
+            dateString = dateString.Split(" ").First();
+            return " timestamp;"+dateString+";"+timeString;
+        }
 
-        [Required]
-        [Range (-50, 50)]
-        public double Temperature { get; set; }
+        public void UpdateWeather() {
+            date = DateTime.Now.Date;
+            time = DateTime.MinValue;
+            time = time.AddHours(DateTime.Now.Hour);
+            time = time.AddMinutes(DateTime.Now.Minute);
+        }
+        public int GetFieldID() {
+            return fieldID;
+        }
 
-        [Required]
-        [Range (0, 100)]
-        public int Moisture { get; set; }
-
-        [Required]
-        [Range (900, 1100)]
-        public int AirPressure { get; set; }
-
-        [Required]
-        [Range (0, 1825)]
-        public int RainfallAmount { get; set; }
-
-        [Required]
-        [MaxLength(5)]
-        public string WindDirection { get; set; }
-
-        [Required]
-        [Range (0, 200)]
-        public int WindSpeed { get; set; }
-
-        [Required]
-        public DateTime Date { get; set; }
-        public int FieldID { get; set; }
-
-        public Field Field { get; set; }
+        public StationPrototype Clone() {
+            return new Weather(this);
+        }
     }
 }

@@ -15,6 +15,6 @@ namespace OnlyFarms.Services
         void Detach(IWeatherObserver observer);
 
         // Notify all weather observers about an event.
-        void Notify(Weather weather);
+        void Notify(WeatherUnit weather);
     }
 }

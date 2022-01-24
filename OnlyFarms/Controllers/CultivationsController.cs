@@ -94,7 +94,7 @@ namespace OnlyFarms.Controllers
 
             if(cultivation.CropStatus == "Ready for harvest")
             {
-                Weather weatherFirst = await _context.Weathers
+                WeatherUnit weatherFirst = await _context.Weathers
                                         .Include(s => s.Field)
                                         .Where(s => s.FieldID == cultivation.FieldID)
                                         .Where(s => s.Date.DayOfYear == DateTime.Today.DayOfYear)
@@ -117,7 +117,7 @@ namespace OnlyFarms.Controllers
 
                 if(harvestTime < harvestTime.AddDays(2))
                 {
-                    Weather weatherSecond = await _context.Weathers
+                    WeatherUnit weatherSecond = await _context.Weathers
                                         .Include(s => s.Field)
                                         .Where(s => s.FieldID == cultivation.FieldID)
                                         .Where(s => s.Date.DayOfYear == DateTime.Today.DayOfYear -1)
@@ -140,7 +140,7 @@ namespace OnlyFarms.Controllers
 
                     if (harvestTime < harvestTime.AddDays(1))
                     {
-                        Weather weatherThird = await _context.Weathers
+                        WeatherUnit weatherThird = await _context.Weathers
                                             .Include(s => s.Field)
                                             .Where(s => s.FieldID == cultivation.FieldID)
                                             .Where(s => s.Date.DayOfYear == DateTime.Today.DayOfYear - 2)

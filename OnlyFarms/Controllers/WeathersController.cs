@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlyFarms.Data;
 using OnlyFarms.Models;
+using OnlyFarms.Models.Decorators;
 
 namespace OnlyFarms.Controllers
 {
@@ -33,7 +34,6 @@ namespace OnlyFarms.Controllers
             {
                 return NotFound();
             }
-
             var weather = await _context.Weathers
                 .Include(w => w.Field)
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -57,7 +57,7 @@ namespace OnlyFarms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Temperature,Moisture,AirPressure,RainfallAmount,WindDirection,WindSpeed,Date,FieldID")] Weather weather)
+        public async Task<IActionResult> Create([Bind("ID,Temperature,Moisture,AirPressure,RainfallAmount,WindDirection,WindSpeed,Date,FieldID")] WeatherUnit weather)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace OnlyFarms.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Temperature,Moisture,AirPressure,RainfallAmount,WindDirection,WindSpeed,Date,FieldID")] Weather weather)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Temperature,Moisture,AirPressure,RainfallAmount,WindDirection,WindSpeed,Date,FieldID")] WeatherUnit weather)
         {
             if (id != weather.ID)
             {

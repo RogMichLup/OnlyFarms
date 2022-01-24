@@ -21,13 +21,6 @@ namespace OnlyFarms.Controllers {
 
 
         public IActionResult Index() {
-            //var claims = new List<Claim>()
-            //      {
-            //            new Claim(ClaimTypes.Name, "worker#"+ID.ToString()),
-            //            new Claim(ClaimTypes.Role, "worker")
-            //        };
-            //var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
-            //await HttpContext.SignInAsync("CookieAuthentication", new ClaimsPrincipal(claimsIdentity));
             return View();
         }
         public IActionResult Login() {

@@ -8,7 +8,7 @@ namespace OnlyFarms.Services
 {
     public class FertilizationObserver : IWeatherObserver
     {
-        public void Update(Weather weather)
+        public void Update(WeatherUnit weather)
         {
             //TODO: Some action with notifying of the fertilization date change.
             Console.WriteLine("Date of fertilization is updated");

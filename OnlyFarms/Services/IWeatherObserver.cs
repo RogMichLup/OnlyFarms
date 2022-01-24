@@ -8,6 +8,6 @@ namespace OnlyFarms.Services
 {
     public interface IWeatherObserver
     {
-        void Update(Weather weather);
+        void Update(WeatherUnit weather);
     }
 }
