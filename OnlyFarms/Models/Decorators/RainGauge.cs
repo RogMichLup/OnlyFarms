@@ -7,7 +7,10 @@ namespace OnlyFarms.Models.Decorators {
     public class RainGauge : StationDecorator {
         int? rainfallAmount;
         public RainGauge(StationPrototype decoratedStation) : base(decoratedStation) { }
-        public RainGauge(StationDecorator stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) { }
+        public RainGauge(RainGauge stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) {
+            if (wantsToClone)
+                this.rainfallAmount = stationToManipulate.rainfallAmount;
+        }
         public override void UpdateWeather() {
             Random rnd = new Random();
             if (rainfallAmount == null) {

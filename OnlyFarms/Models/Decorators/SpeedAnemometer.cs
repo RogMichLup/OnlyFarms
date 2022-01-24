@@ -7,7 +7,10 @@ namespace OnlyFarms.Models.Decorators {
     public class SpeedAnemometer : StationDecorator {
         int? windSpeed;
         public SpeedAnemometer(StationPrototype decoratedStation) : base(decoratedStation) { }
-        public SpeedAnemometer(StationDecorator stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) { }
+        public SpeedAnemometer(SpeedAnemometer stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) {
+            if (wantsToClone)
+                this.windSpeed = stationToManipulate.windSpeed;
+        }
         public override void UpdateWeather() {
             Random rnd = new Random();
             if (windSpeed == null) {

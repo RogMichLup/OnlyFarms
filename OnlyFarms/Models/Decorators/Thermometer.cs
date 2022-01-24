@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 
 namespace OnlyFarms.Models.Decorators {
     public class Thermometer : StationDecorator {
-        double? temperature;
+        protected double? temperature;
         public Thermometer(StationPrototype decoratedStation) : base(decoratedStation) { }
-        public Thermometer(StationDecorator stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) { }
+        public Thermometer(Thermometer stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) {
+            if (wantsToClone)
+                this.temperature = stationToManipulate.temperature;
+        }
         public override void UpdateWeather() {
             Random rnd = new Random();
             if (temperature == null) {

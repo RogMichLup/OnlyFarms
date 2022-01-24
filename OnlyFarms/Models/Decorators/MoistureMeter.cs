@@ -7,7 +7,10 @@ namespace OnlyFarms.Models.Decorators {
     public class MoistureMeter : StationDecorator {
         int? moisture;
         public MoistureMeter(StationPrototype decoratedStation) : base(decoratedStation) { }
-        public MoistureMeter(StationDecorator stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) { }
+        public MoistureMeter(MoistureMeter stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) {
+            if (wantsToClone)
+                this.moisture = stationToManipulate.moisture;
+        }
         public override void UpdateWeather(){
             Random rnd = new Random();
             if (moisture == null) {

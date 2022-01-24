@@ -7,7 +7,10 @@ namespace OnlyFarms.Models.Decorators {
     public class Barometer : StationDecorator {
         int? airPressure;
         public Barometer(StationPrototype decoratedStation) : base(decoratedStation) { }
-        public Barometer(StationDecorator stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) { }
+        public Barometer(Barometer stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) {
+            if (wantsToClone)
+                this.airPressure = stationToManipulate.airPressure;
+        }
         public override void UpdateWeather() {
             Random rnd = new Random();
             if (airPressure == null) {

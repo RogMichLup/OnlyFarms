@@ -7,7 +7,10 @@ namespace OnlyFarms.Models.Decorators {
     public class DirectionAnemometer : StationDecorator {
         string windDirection;
         public DirectionAnemometer(StationPrototype decoratedStation) : base(decoratedStation) { }
-        public DirectionAnemometer(StationDecorator stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) { }
+        public DirectionAnemometer(DirectionAnemometer stationToManipulate, bool wantsToClone) : base(stationToManipulate, wantsToClone) {
+            if (wantsToClone)
+                this.windDirection = stationToManipulate.windDirection;
+        }
         public override void UpdateWeather() {
             Random rnd = new Random();
             int i = rnd.Next(0, 3);

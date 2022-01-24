@@ -40,21 +40,21 @@ namespace OnlyFarms.Controllers {
             if (@field == null) {
                 return NotFound();
             }
-
+            StationConnections stationConnections = StationConnections.GetInstance();
             WeatherUnit weather = new WeatherUnit();
-            StationPrototype weatherStation = Global.weatherStations.Find(p => p.GetFieldID() == field.ID);
-            if (weatherStation != null) {
+            StationPrototype weatherStation = null; //initialize weather station of this field
+            if (stationConnections.DoesConnectionExist(id)) {
+                weatherStation = stationConnections.GetConnection(id).Clone();
                 weather = TransformWeather(weatherStation.GetWeather());
-                weather.Field = field;
-                weather.FieldID = field.ID;
+                //weather.Field = field;
+                //weather.FieldID = field.ID;
             }
             else {
                 weatherStation = new Weather(field.ID);
-                Global.weatherStations.Add(weatherStation);
+                stationConnections.ConnectNewStation(weatherStation);
                 weather = TransformWeather(weatherStation.GetWeather());
-                weather.Field = field;
-                weather.FieldID = field.ID;
             }
+            stationConnections.UpdateStation(weatherStation);
 
             List<Cultivation> cultivations = await _context.Cultivations
                                                     .Include(c => c.Crop)
@@ -172,17 +172,16 @@ namespace OnlyFarms.Controllers {
             if (@field == null) {
                 return NotFound();
             }
-
+            StationConnections stationConnections = StationConnections.GetInstance();
             WeatherUnit weather = new WeatherUnit();
-            StationPrototype weatherStation = Global.weatherStations.Find(p => p.GetFieldID() == field.ID);
-            if (weatherStation != null) {
-                weatherStation = weatherStation.Clone();
+            StationPrototype weatherStation = null; //initialize weather station of this field
+            if (stationConnections.DoesConnectionExist(id)) {
+                weatherStation = stationConnections.GetConnection(id).Clone();
                 weatherStation.UpdateWeather();
                 weather = TransformWeather(weatherStation.GetWeather());
             }
             else {
-                weatherStation = new Weather(field.ID);
-                Global.weatherStations.Add(weatherStation);
+                return NotFound();
             }
 
             var harvestObserver = new HarvestObserver();
@@ -194,8 +193,7 @@ namespace OnlyFarms.Controllers {
             Console.WriteLine("Updating Weather Status...");
 
             _weatherService.UpdateWeather(weather);
-            Global.weatherStations[Global.weatherStations.FindIndex(p => p.GetFieldID() == field.ID)] = weatherStation; //updating the values in server storage
-
+            stationConnections.UpdateStation(weatherStation);  
 
             List<Cultivation> cultivations = await _context.Cultivations
                                                     .Include(c => c.Crop)
@@ -304,11 +302,11 @@ namespace OnlyFarms.Controllers {
             if (@field == null) {
                 return NotFound();
             }
-
+            StationConnections stationConnections = StationConnections.GetInstance();
             WeatherUnit weather = new WeatherUnit();
-            StationPrototype weatherStation = Global.weatherStations.Find(p => p.GetFieldID() == field.ID);
-            if (weatherStation != null) {
-                weatherStation = weatherStation.Clone(); //clone static connection to it's own object so multiple users can access
+            StationPrototype weatherStation = null; //initialize weather station of this field
+            if (stationConnections.DoesConnectionExist(id)) {
+                weatherStation = stationConnections.GetConnection(id).Clone();
                 weatherStation = AddToolToStation(weatherStation, command);
                 weatherStation.UpdateWeather();
                 weather = TransformWeather(weatherStation.GetWeather());
@@ -318,7 +316,7 @@ namespace OnlyFarms.Controllers {
             else {
                 return NotFound();
             }
-            Global.weatherStations[Global.weatherStations.FindIndex(p => p.GetFieldID() == field.ID)] = weatherStation; //updating the values in server storage
+            stationConnections.UpdateStation(weatherStation);
 
             List<Cultivation> cultivations = await _context.Cultivations
                                                     .Include(c => c.Crop)
