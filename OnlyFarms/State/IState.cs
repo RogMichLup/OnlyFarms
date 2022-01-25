@@ -17,36 +17,36 @@ namespace OnlyFarms.State
         // TODO change return values to differ from NotAvailable
         public string IsAvailableForWork(Machine machine)
         {
-            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For cleanup"))
+            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For clean up"))
             {
                 machine.ChangeState(new NotAvailableState());
                 return new NotAvailableState().IsAvailableForWork(machine);
             }
             else
-                return "Machine is available for work";
+                return "Machine is available for work. ";
         }
 
         public string FuelConsumption(Machine machine)
         {
-            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For cleanup"))
+            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For clean up"))
             {
                 machine.ChangeState(new NotAvailableState());
                 return new NotAvailableState().FuelConsumption(machine);
             }
             else
-                return "Machine is current fuel consumption is: " + machine.FuelUsageRate.ToString();
+                return "Machine current fuel consumption is: " + machine.FuelUsageRate.ToString() + ". ";
         }
 
         public string WhyUnavailable(Machine machine)
         {
-            if (machine.Status == "For repair" || string.Equals(machine.Status, "For cleanup"))
+            if (machine.Status == "For repair" || string.Equals(machine.Status, "For clean up"))
             {
                 machine.ChangeState(new NotAvailableState());
                 return new NotAvailableState().WhyUnavailable(machine);
             }
             else
             {
-                return "Machine is available for work";
+                return "There is no reason for the machine to be unavailable. ";
             }
         }
     }
@@ -55,9 +55,9 @@ namespace OnlyFarms.State
         // TODO change return values to differ from Available
         public string IsAvailableForWork(Machine machine)
         {
-            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For cleanup"))
+            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For clean up"))
             {
-                return "Machine is not available for work";
+                return "Machine is not available for work. ";
             }
             else
             {
@@ -68,9 +68,9 @@ namespace OnlyFarms.State
 
         public string FuelConsumption(Machine machine)
         {
-            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For cleanup"))
+            if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For clean up"))
             {
-                return "Machine is not consuming any fuel at the moment";
+                return "Machine is not consuming any fuel at the moment. ";
             }
             else
             {
@@ -83,11 +83,11 @@ namespace OnlyFarms.State
         {
             if (string.Equals(machine.Status, "For repair"))
             {
-                return "Machine is not available because of repair";
+                return "Machine is not available because of repair. ";
             }
-            else if (string.Equals(machine.Status, "For cleanup"))
+            else if (string.Equals(machine.Status, "For clean up"))
             {
-                return "Machine is not available because of cleanup";
+                return "Machine is not available because of cleanup. ";
             }
             else
             {

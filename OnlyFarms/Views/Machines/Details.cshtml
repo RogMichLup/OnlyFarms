@@ -34,15 +34,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FuelUsageRate)
         </dd>
-        <a class="link" style="color:lightgoldenrodyellow;">
-            <i class="icon-spin4" style="font-size: 45px;" onclick="location.href = '/Machines/GetMachineInfo/@Model.ID';"></i> 
-            <h1>
-                @ViewBag.machineState
-                @ViewBag.machineCurrentFuelUsage
-                @ViewBag.machineAvailability
-            </h1>
-        </a>
     </dl>
+    <input type="button" value="Get additional info" class="btn btn-primary" onclick="location.href = '/Machines/GetMachineInfo/@Model.ID';" />
+    <p></p>
+    <p>@ViewBag.machineState</p>
+    <p>@ViewBag.machineCurrentFuelUsage</p>
+    <p>@ViewBag.machineAvailability</p>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
