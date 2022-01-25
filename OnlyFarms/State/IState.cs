@@ -14,7 +14,6 @@ namespace OnlyFarms.State
     }
     class AvailableState : IState
     {
-        // TODO change return values to differ from NotAvailable
         public string IsAvailableForWork(Machine machine)
         {
             if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For clean up"))
@@ -52,7 +51,6 @@ namespace OnlyFarms.State
     }
     class NotAvailableState : IState
     {
-        // TODO change return values to differ from Available
         public string IsAvailableForWork(Machine machine)
         {
             if (string.Equals(machine.Status, "For repair") || string.Equals(machine.Status, "For clean up"))
