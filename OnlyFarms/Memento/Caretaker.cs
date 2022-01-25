@@ -15,7 +15,7 @@ namespace OnlyFarms.Memento
             backup = procedure.CreateSnapshot();
         }
 
-        public static Procedure Undo(Procedure procedure)
+        public static Procedure Undo()
         {
             if(backup != null)
             {

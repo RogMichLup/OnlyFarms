@@ -148,7 +148,7 @@ namespace OnlyFarms.Controllers
             }
 
 
-            procedure = Caretaker.Undo(procedure);
+            procedure = Caretaker.Undo();
 
             _context.SaveChanges();
 
