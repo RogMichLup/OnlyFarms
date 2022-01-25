@@ -111,7 +111,7 @@ namespace OnlyFarms.Controllers
                 return NotFound();
             }
 
-            if(Caretaker.Undo(procedure) == null)
+            if(Caretaker.Undo() == null)
             {
                 ViewBag.noBackup = true;
             }
