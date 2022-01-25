@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace OnlyFarms.Memento
 {
-    public class Caretaker
+    public static class Caretaker
     {
-        private Snapshot backup;
+        private static Snapshot backup;
 
-        public void MakeBackup(Procedure procedure)
+        public static void MakeBackup(Procedure procedure)
         {
             backup = procedure.CreateSnapshot();
         }
 
-        public void Undo()
+        public static void Undo()
         {
             if(backup != null)
             {
