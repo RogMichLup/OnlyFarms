@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 
 namespace OnlyFarms.Models {
     public interface StationPrototype {
-        public StationPrototype SendUpdate() {
-            return this;
-        }
         public StationPrototype Clone();
         public string GetWeather();
         public void UpdateWeather();

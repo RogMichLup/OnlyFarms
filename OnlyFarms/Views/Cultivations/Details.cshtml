@@ -34,8 +34,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Field.Tag)
         </dd>
-        @if (ViewBag.harvestTime != null)
-        {
+        @if (ViewBag.harvestTime != null) {
             <dt class="col-sm-2">
                 Excepted harvest time:
             </dt>
@@ -44,13 +43,25 @@
             </dd>
         }
 
-        @if (User.IsInRole("admin"))
-        {
+        @if (User.IsInRole("admin")) {
             <dt class="col-sm-2">
                 Excepted gain:
             </dt>
             <dd class="col-sm-10">
-                @ViewBag.costBillanse zł (after sale all crop from this cultivation)
+                @if (@ViewBag.strategySelected == "true") {
+                    @ViewBag.costBillanse @:zł
+                }
+                else {
+                    @ViewBag.costBillanse
+                }
+            </dd>
+            <dt class="col-sm-2">
+                Profit calculation method:
+            </dt>
+            <dd class="col-sm-10">
+                <button onclick="location.href = '/Cultivations/SelectRegularProfitCalculation/@Model.ID';">Normal</button>
+                <button onclick="location.href = '/Cultivations/SelectWorkerlessProfitCalculation/@Model.ID';">Without workers costs</button>
+                <button onclick="location.href = '/Cultivations/SelectSupplylessProfitCalculation/@Model.ID';">Without supplies costs</button>
             </dd>
         }
     </dl>

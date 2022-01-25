@@ -60,6 +60,7 @@ namespace OnlyFarms {
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
