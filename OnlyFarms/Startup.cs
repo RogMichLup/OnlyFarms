@@ -30,6 +30,8 @@ namespace OnlyFarms {
 
             services.AddControllersWithViews();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddScoped<IWeatherService, WeatherService>();
 
             services.AddAuthentication("CookieAuthentication")
@@ -42,7 +44,11 @@ namespace OnlyFarms {
                 services.AddMvc();
             });
 
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
+
             services.AddMemoryCache();
         }
 
@@ -56,6 +62,7 @@ namespace OnlyFarms {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();

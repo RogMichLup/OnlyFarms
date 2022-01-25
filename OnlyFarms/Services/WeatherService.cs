@@ -5,7 +5,7 @@ namespace OnlyFarms.Services
 {
     public class WeatherService : IWeatherService
     {
-        public List<IWeatherObserver> Observers = new List<IWeatherObserver>();
+        public static List<IWeatherObserver> Observers = new List<IWeatherObserver>();
 
         public void UpdateWeather(WeatherUnit weather)
         {

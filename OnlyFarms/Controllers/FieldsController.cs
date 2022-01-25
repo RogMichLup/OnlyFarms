@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -181,17 +182,14 @@ namespace OnlyFarms.Controllers {
             else {
                 return NotFound();
             }
-
-            var harvestObserver = new HarvestObserver();
-            var fertilizationObserver = new FertilizationObserver();
-
-            _weatherService.Attach(harvestObserver);
-            _weatherService.Attach(fertilizationObserver);
+            
+            stationConnections.UpdateStation(weatherStation);  
 
             Console.WriteLine("Updating Weather Status...");
 
+            weather.Field = field;
+            weather.FieldID = field.ID;
             _weatherService.UpdateWeather(weather);
-            stationConnections.UpdateStation(weatherStation);  
 
             List<Cultivation> cultivations = await _context.Cultivations
                                                     .Include(c => c.Crop)
@@ -349,6 +347,56 @@ namespace OnlyFarms.Controllers {
                     break;
             }
             return finishedStation;
+        }
+        public async Task<IActionResult> AddObserver(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var @field = await _context.Fields
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (@field == null)
+            {
+                return NotFound();
+            }
+
+            StationConnections stationConnections = StationConnections.GetInstance();
+            WeatherUnit weather = new WeatherUnit();
+            StationPrototype weatherStation = null; //initialize weather station of this field
+            if (stationConnections.DoesConnectionExist(id))
+            {
+                weatherStation = stationConnections.GetConnection(id).Clone();
+                weather = TransformWeather(weatherStation.GetWeather());
+            }
+            else
+            {
+                weatherStation = new Weather(field.ID);
+                stationConnections.ConnectNewStation(weatherStation);
+                weather = TransformWeather(weatherStation.GetWeather());
+            }
+            stationConnections.UpdateStation(weatherStation);
+
+            List<Cultivation> cultivations = await _context.Cultivations
+                                                    .Include(c => c.Crop)
+                                                    .Include(c => c.Field)
+                                                    .Where(c => c.FieldID == field.ID)
+                                                    .ToListAsync();
+            ViewBag.cultivations = cultivations;
+            ViewBag.weather = weather;
+
+            var harvestObserver = new HarvestObserver();
+            var fertilizationObserver = new FertilizationObserver();
+            HttpContext.Session.SetString("HarvestObserver", "HarvestObserver");
+            HttpContext.Session.SetString("FertilizationObserver", "FertilizationObserver");
+
+            _weatherService.Attach(harvestObserver);
+            _weatherService.Attach(fertilizationObserver);
+
+
+            return View("Details", @field);
         }
     }
 }
