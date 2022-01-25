@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlyFarms.Data;
 using OnlyFarms.Models;
+using OnlyFarms.Memento;
 
 namespace OnlyFarms.Controllers
 {
@@ -111,7 +112,6 @@ namespace OnlyFarms.Controllers
             {
                 return NotFound();
             }
-
             List<Supply> suppliesInProcedure;
 
             suppliesInProcedure = await _context.Supplies
@@ -125,6 +125,25 @@ namespace OnlyFarms.Controllers
             ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName", procedure.WorkerID);
             ViewBag.suppliesInProcedure = suppliesInProcedure;
             ViewBag.supplies = supplies;
+            return View(procedure);
+        }
+        // GET: Procedures/Restore/5
+        public async Task<IActionResult> Restore(int? id)
+        {
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var procedure = await _context.Procedures.FindAsync(id);
+            if (procedure == null)
+            {
+                return NotFound();
+            }
+
+            Caretaker.Undo();
+            _context.SaveChanges();
             return View(procedure);
         }
 
@@ -155,6 +174,8 @@ namespace OnlyFarms.Controllers
                 {
                     _context.Update(procedureSupply);
                     _context.SaveChanges();
+
+                    Caretaker.MakeBackup(procedureSupply);
 
                     procedureSupply.Supplies = new List<Supply>();
                     foreach (Supply item in supplies)

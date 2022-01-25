@@ -15,26 +15,30 @@
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="Label" class="control-label"></label>
-                @if (User.IsInRole("admin")) {
+                @if (User.IsInRole("admin"))
+                {
                     <input asp-for="Label" class="form-control" />
                 }
-                else {
+                else
+                {
                     <input asp-for="Label" class="form-control" readonly />
                 }
                 <span asp-validation-for="Label" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label  class="control-label">Start Date</label>
-                @if (User.IsInRole("admin")) {
+                <label class="control-label">Start Date</label>
+                @if (User.IsInRole("admin"))
+                {
                     <input asp-for="StartDate" class="form-control" />
                 }
-                else {
+                else
+                {
                     <input asp-for="StartDate" class="form-control" readonly />
                 }
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label  class="control-label">Duration In Hours</label>
+                <label class="control-label">Duration In Hours</label>
                 <input asp-for="DurationInHours" class="form-control" />
                 <span asp-validation-for="DurationInHours" class="text-danger"></span>
             </div>
@@ -49,12 +53,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Field" class="control-label"></label>
-                @if (User.IsInRole("admin")) {
+                @if (User.IsInRole("admin"))
+                {
                     <select asp-for="FieldID" class="form-control" asp-items="ViewBag.FieldID"></select>
                 }
-                else {
+                else
+                {
                     <select asp-for="FieldID" class="form-control" asp-items="ViewBag.FieldID" disabled></select>
-                    <input asp-for="FieldID" class="form-control"  hidden/>
+                    <input asp-for="FieldID" class="form-control" hidden />
                 }
                 <span asp-validation-for="FieldID" class="text-danger"></span>
             </div>
@@ -70,33 +76,40 @@
             </div>
             <div class="form-group">
                 <label asp-for="Worker" class="control-label"></label>
-                @if (User.IsInRole("admin")) {
+                @if (User.IsInRole("admin"))
+                {
                     <select asp-for="WorkerID" class="form-control" asp-items="ViewBag.WorkerID"></select>
                 }
-                else {
+                else
+                {
                     <select asp-for="WorkerID" class="form-control" asp-items="ViewBag.WorkerID" disabled></select>
-                    <input asp-for="WorkerID" class="form-control" hidden/>
+                    <input asp-for="WorkerID" class="form-control" hidden />
                 }
                 <span asp-validation-for="WorkerID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Supplies" class="control-label"></label>
                 <table>
-                    @foreach (Supply item in ViewBag.supplies) {
+                    @foreach (Supply item in ViewBag.supplies)
+                    {
                         bool check = false;
 
-                        foreach (Supply supply in ViewBag.suppliesInProcedure) {
-                            if (item == supply) {
+                        foreach (Supply supply in ViewBag.suppliesInProcedure)
+                        {
+                            if (item == supply)
+                            {
                                 check = true;
                             }
                         }
-                        if (check) {
+                        if (check)
+                        {
                             <tr>
                                 <td>@item.Name</td>
                                 <td><input type="checkbox" name="cx+@item.ID" checked></td>
                             </tr>
                         }
-                        else {
+                        else
+                        {
                             <tr>
                                 <td>@item.Name</td>
                                 <td><input type="checkbox" name="cx+@item.ID"></td>
@@ -108,6 +121,9 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+            <a class="link" style="color:lightgoldenrodyellow;">
+                <i class="icon-spin4" style="font-size: 45px;" onclick="location.href = '/Procedures/Restore/@Model.ID';"></i>
+            </a>
         </form>
     </div>
 </div>
