@@ -15,11 +15,15 @@ namespace OnlyFarms.Memento
             backup = procedure.CreateSnapshot();
         }
 
-        public static void Undo()
+        public static Procedure Undo(Procedure procedure)
         {
             if(backup != null)
             {
-                backup.Restore();
+                return backup.Restore();
+            }
+            else
+            {
+                return null;
             }
         }
     }

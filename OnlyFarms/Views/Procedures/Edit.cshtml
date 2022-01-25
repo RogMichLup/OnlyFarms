@@ -96,7 +96,7 @@
 
                         foreach (Supply supply in ViewBag.suppliesInProcedure)
                         {
-                            if (item == supply)
+                            if (item.ID == supply.ID)
                             {
                                 check = true;
                             }
@@ -121,9 +121,10 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-            <a class="link" style="color:lightgoldenrodyellow;">
-                <i class="icon-spin4" style="font-size: 45px;" onclick="location.href = '/Procedures/Restore/@Model.ID';"></i>
-            </a>
+            @if (ViewBag.noBackup != true)
+            {
+                <input type="button" value="Restore" class="btn btn-primary" onclick="location.href = '/Procedures/RestoreBackup/@Model.ID';"></input>
+            }
         </form>
     </div>
 </div>
