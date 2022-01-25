@@ -8,7 +8,7 @@ namespace OnlyFarms.Memento
 {
     public class Snapshot
     {
-        private Procedure procedure { get; }
+        public Procedure procedure { get; }
 
         public int ID { get;}
 
@@ -66,7 +66,7 @@ namespace OnlyFarms.Memento
             this.Supplies = Supplies;
         }
 
-        public void Restore()
+        public Procedure Restore()
         {
             procedure.ID = ID;
             procedure.Label = Label;
@@ -82,6 +82,7 @@ namespace OnlyFarms.Memento
             procedure.Machine = Machine;
             procedure.Worker = Worker;
             procedure.Supplies = Supplies;
+            return procedure;
         }
     }
 }

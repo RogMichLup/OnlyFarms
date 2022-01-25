@@ -100,8 +100,6 @@ namespace OnlyFarms.Controllers
         // GET: Procedures/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            
-
             if (id == null)
             {
                 return NotFound();
@@ -112,6 +110,12 @@ namespace OnlyFarms.Controllers
             {
                 return NotFound();
             }
+
+            if(Caretaker.Undo(procedure) == null)
+            {
+                ViewBag.noBackup = true;
+            }
+
             List<Supply> suppliesInProcedure;
 
             suppliesInProcedure = await _context.Supplies
@@ -128,23 +132,35 @@ namespace OnlyFarms.Controllers
             return View(procedure);
         }
         // GET: Procedures/Restore/5
-        public async Task<IActionResult> Restore(int? id)
+        public async Task<IActionResult> RestoreBackup(int? id)
         {
-
+            
             if (id == null)
             {
                 return NotFound();
             }
 
             var procedure = await _context.Procedures.FindAsync(id);
+
             if (procedure == null)
             {
                 return NotFound();
             }
 
-            Caretaker.Undo();
+
+            procedure = Caretaker.Undo(procedure);
+
             _context.SaveChanges();
-            return View(procedure);
+
+            ViewData["EquipmentID"] = new SelectList(_context.Equipments, "ID", "Name", procedure.EquipmentID);
+            ViewData["FieldID"] = new SelectList(_context.Fields, "ID", "Tag", procedure.FieldID);
+            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Name", procedure.MachineID);
+            ViewData["WorkerID"] = new SelectList(_context.Workers, "ID", "FirstName", procedure.WorkerID);
+
+            ViewBag.suppliesInProcedure = procedure.Supplies;
+            ViewBag.supplies = supplies;
+
+            return View("Edit", procedure);
         }
 
         // POST: Procedures/Edit/5
